@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import './assets/css/styles.scss'
 function App() {
   return (
     <div className="App">
