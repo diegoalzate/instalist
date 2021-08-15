@@ -2,9 +2,9 @@ const Home = () => {
     return (
       <div className="container">
         <section>
-          <h2 className="font-bold">What is Instalist?</h2>
+          <h2 className="font-bold text-red">What is Instalist?</h2>
           <p>
-            It's a wishlist for instagram, not that hard to understand
+            It's a wishlist for instagram, it's not rocket science.
           </p>
         </section>
       </div>
