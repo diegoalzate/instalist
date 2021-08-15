@@ -1,8 +1,8 @@
 const Header = () => {
     return (
-        <div>
+        <header className="py-4 text-center">
             <h1>Instalist</h1>
-        </div>
+        </header>
     );
 }
 
