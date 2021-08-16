@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react'
 import './assets/css/styles.css'
 import { Switch, Route } from 'react-router-dom'
+import WebLayout from './containers/Layout'
 // components
 import SuspenseFallback from './components/shared/SuspenseFallback'
 // pages
@@ -11,8 +12,10 @@ function App() {
     <div className="App">
       <Switch>
         <Route path="/">
-          <Suspense fallback={<SuspenseFallback/>}>
-            <Home/>
+          <Suspense fallback={SuspenseFallback}>
+            <WebLayout>
+              <Home/>
+            </WebLayout>
           </Suspense>
         </Route>
       </Switch>
