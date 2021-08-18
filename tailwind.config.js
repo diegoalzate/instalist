@@ -11,7 +11,11 @@ module.exports = {
       blue: colors.lightBlue,
       red: colors.rose,
       pink: colors.fuchsia,
-    }
+    },
+      fontFamily: {
+        'WorkSans': ['WorkSans'],
+        'Bitter': ['Bitter']
+      }
     },
     variants: {
       extend: {},
