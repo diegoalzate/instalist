@@ -2,7 +2,7 @@ import todoIllustration from "../assets/images/undraw_chore_list_re_2lq8.svg";
 import { ShareIcon, DeviceMobileIcon, EyeOffIcon } from "@heroicons/react/outline";
 const Home = () => {
   return (
-    <div className="container">
+    <div className="container py-10">
       <section id="home-page" className="p-4 grid grid-cols-1 sm:grid-cols-2 justify-center gap-4">
         <div className="flex flex-col gap-6 sm:gap-10 sm:my-10 text-center sm:text-left sm:ml-auto">
           <h2 className="text-4xl font-bold text-red-400 sm:text-6xl">
