@@ -6,6 +6,7 @@ import WebLayout from './containers/Layout'
 import SuspenseFallback from './components/shared/SuspenseFallback'
 // pages
 const Home = lazy(() => import('./pages/Home'))
+const SignUp = lazy(() => import('./pages/SignUp'))
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
         <Route path="/">
           <Suspense fallback={SuspenseFallback}>
             <WebLayout>
-              <Home/>
+              <SignUp/>
             </WebLayout>
           </Suspense>
         </Route>
