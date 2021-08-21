@@ -6,8 +6,16 @@ module.exports = {
       extend: {},
       colors: {
       transparent: 'transparent',
-      current: 'currentColor'
-    }
+      current: 'currentColor',
+      gray: colors.coolGray,
+      blue: colors.lightBlue,
+      red: colors.rose,
+      pink: colors.fuchsia,
+    },
+      fontFamily: {
+        'WorkSans': ['WorkSans'],
+        'Bitter': ['Bitter']
+      }
     },
     variants: {
       extend: {},
