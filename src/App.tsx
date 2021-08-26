@@ -6,15 +6,23 @@ import WebLayout from './containers/Layout'
 import SuspenseFallback from './components/shared/SuspenseFallback'
 // pages
 const Home = lazy(() => import('./pages/Home'))
+const List = lazy(() => import('./pages/List'))
 
 function App() {
   return (
     <div className="App">
       <Switch>
-        <Route path="/">
-          <Suspense fallback={<SuspenseFallback/>}>
+        <Route path="/list" exact>
+          <Suspense fallback={<SuspenseFallback />}>
             <WebLayout>
-              <Home/>
+              <List />
+            </WebLayout>
+          </Suspense>
+        </Route>
+        <Route path="/" exact>
+          <Suspense fallback={<SuspenseFallback />}>
+            <WebLayout>
+              <Home />
             </WebLayout>
           </Suspense>
         </Route>

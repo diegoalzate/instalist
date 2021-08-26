@@ -7,11 +7,13 @@ type IProps = {
     children: RouteChildrenProps<any> | React.ReactNode
 }
 
-const WebLayout = ( { children }: IProps) => {
+const WebLayout = ({ children }: IProps) => {
     return (
         <Fragment>
             <Header />
-            {children}
+            <body className="py-12">
+                {children}
+            </body>
             <Footer />
         </Fragment>
     )
