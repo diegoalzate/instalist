@@ -13,7 +13,7 @@ function App() {
     <div className="App">
       <Switch>
         <Route path="/">
-          <Suspense fallback={SuspenseFallback}>
+          <Suspense fallback={<SuspenseFallback/>}>
             <WebLayout>
               <SignIn/>
             </WebLayout>

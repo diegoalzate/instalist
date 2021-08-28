@@ -1,7 +1,7 @@
 const Header = () => {
     return (
-        <header className="py-4 text-center">
-            <h1>Instalist</h1>
+        <header className="fixed top-0 inset-x-0 bg-red-400 text-gray-100 font-semibold text-center px-6 mx-auto flex fixed border-gray-200 border-b-2">
+            <h1 className="w-full block p-3">Instalist</h1>
         </header>
     );
 }
