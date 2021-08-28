@@ -1,0 +1,1 @@
+export const phonePattern = /^\+?\d{9,15}$/;
