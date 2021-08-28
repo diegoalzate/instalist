@@ -28,7 +28,7 @@ const SignIn = () => {
 
     return (
         <div className="container min-h-screen flex items-center justify-center">
-            <div className="border-gray-200 border-2 bg-white p-8 rounded shadow-2x1 w-2/3">
+            <div className="border-gray-200 border-2 bg-white p-8 rounded shadow-2x1 ">
                 <h2 className="text-xl font-bold mb-10 text-red-400">Create Your Account</h2>
                 <form className="space-y-8">
                     <div>
