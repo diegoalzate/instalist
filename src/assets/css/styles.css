@@ -204,3 +204,14 @@
 h1, h2, h3, h4, h5, h6{
     font-family: 'WorkSans';
 }
+
+.PhoneInputCountry {
+  margin-left: 10px;
+  width: 20%;
+}
+
+.PhoneInputInput {
+  margin-right: 5px;
+  outline: none;
+  
+}

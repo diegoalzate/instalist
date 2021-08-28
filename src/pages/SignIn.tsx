@@ -164,9 +164,9 @@ const SignIn = () => {
                         <label className="block mb-1 font-bold text-sm text-gray-500">Phone</label>
                         <PhoneInput
                             international
+                            type="text"
                             value={formState.values.phone}
                             onChange={handlePhoneChange}
-                            className="form-control outline-none"
                         />
                         {formState.errors && formState.touched.phone && (formState.errors.phone || []).map((err, index) => (
                             <p className="text-red-500" key={index}>
