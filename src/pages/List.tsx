@@ -1,4 +1,5 @@
 import { useState } from "react"
+import Input from "../components/shared/Input"
 const List = () => {
     const [wish, setWish] = useState("")
     const [wishes, setWishes] = useState<String[]>([])
@@ -11,15 +12,9 @@ const List = () => {
     }
     return (
         <div className="container flex flex-col justify-center">
-            <h1 className="self-center mb-4">my list</h1>
+            <h1 className="self-center my-4">my list</h1>
             <div className="self-center space-x-3">
-                <input 
-                    className="shadow-md text-sm text-gray-700 rounded p-2 focus:outline-none" 
-                    name="wish" 
-                    onChange={handleChange} 
-                    value={wish}
-                    placeholder="fidget spinner..."
-                />
+                <Input handleChange={handleChange} wish={wish}/>
                 <button className="rounded bg-red-400 py-1 px-4 text-gray-100" onClick={addItem}>add</button>
             </div>
             <section id="wishes">
