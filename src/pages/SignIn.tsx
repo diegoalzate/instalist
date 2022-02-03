@@ -6,6 +6,9 @@ import { validate } from "validate.js"
 import { on } from "events"
 import { CgSpinner } from 'react-icons/cg'
 
+// UI
+import 'react-phone-number-input/style.css'
+
 interface IFormValues {
     phone: string
     termsAndConditions: number
@@ -155,6 +158,10 @@ const SignIn = () => {
     // }
 
     return (
+        <div>
+
+
+
         <div className="container min-h-screen flex items-center justify-center" >
             <div className="border-gray-200 border-2 bg-white p-8 rounded shadow-2x1 ">
                 <h2 className="text-xl font-bold mb-10 text-red-400">Create Your Account</h2>
@@ -163,8 +170,7 @@ const SignIn = () => {
                     <div className="form-item">
                         <label className="block mb-1 font-bold text-sm text-gray-500">Phone</label>
                         <PhoneInput
-                            international
-                            type="text"
+                            placeholder="Enter phone number"
                             value={formState.values.phone}
                             onChange={handlePhoneChange}
                         />
@@ -192,11 +198,12 @@ const SignIn = () => {
                             : "block text-gray-100 rounded-lg hover:bg-blue-300  bg-red-400 w-full p-4 font-semibold "
                         }
                     >
-                        {loading ? <CgSpinner size={20} className='a-spinner' /> : "Enviar"}
+                        {loading ? <CgSpinner size={20} className='a-spinner' /> : "Send"}
                     </button>
                 </form>
             </div>
         </div >
+        </div>
     )
 }
 
