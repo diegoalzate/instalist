@@ -1,6 +1,5 @@
-import { Flex, IconButton, Input, Spacer, VStack } from '@chakra-ui/react'
-import { LinkIcon, PlusIcon } from '@heroicons/react/outline'
-import { useState } from 'react'
+import { Collapse, Flex, IconButton, Input, useDisclosure } from '@chakra-ui/react'
+import { LinkIcon, PlusIcon, XIcon } from '@heroicons/react/outline'
 
 interface IWishForm {
   value: string
@@ -10,34 +9,25 @@ interface IWishForm {
 }
 
 const WishForm = ({ value, handleChange, onClick, url }: IWishForm) => {
-  const [showLink, setShowLink] = useState(true)
-
+  const { isOpen, onToggle } = useDisclosure()
   return (
-    <Flex flexDirection={'row'}>
-      <VStack mr="4">
+    <div className='flex flex-col w-72 sm:w-96' >
+          <Flex flexDirection={'row'} justifyContent={'space-between'} >
         <Input
           name="wish"
           onChange={handleChange}
           value={value}
           focusBorderColor="red.200"
           placeholder="Write wish here"
+          mr="4" 
+       
         />
-        <Input
-          name="url"
-          onChange={handleChange}
-          hidden={showLink}
-          value={url}
-          focusBorderColor="red.200"
-          placeholder="url"
-        />
-      </VStack>
+      <div className='flex'>
       <IconButton
         aria-label="Add link"
-        icon={<LinkIcon className="max-h-4" />}
+        icon={isOpen ? <XIcon className='max-h-4'/>  : <LinkIcon className="max-h-4" />}
         className="mr-2"
-        onClick={() => {
-          setShowLink((prev) => !prev)
-        }}
+        onClick={onToggle}
       />
       <IconButton
         aria-label="Add wish"
@@ -46,7 +36,20 @@ const WishForm = ({ value, handleChange, onClick, url }: IWishForm) => {
         icon={<PlusIcon className="max-h-4" />}
         onClick={onClick}
       />
+      </div>
     </Flex>
+            <Collapse in={isOpen} animateOpacity>
+          <Input
+            name="url"
+            onChange={handleChange}
+            value={url}
+            focusBorderColor="red.200"
+            placeholder="url"
+            w={'full'}
+            mt={'2'}
+          />
+        </Collapse>
+    </div>
   )
 }
 
