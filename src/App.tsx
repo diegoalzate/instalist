@@ -7,6 +7,7 @@ import SuspenseFallback from './components/shared/SuspenseFallback'
 // pages
 const Home = lazy(() => import('./pages/Home'))
 const List = lazy(() => import('./pages/List'))
+const SignIn = lazy(() => import('./pages/SignIn'))
 
 function App() {
   return (
@@ -23,6 +24,13 @@ function App() {
           <Suspense fallback={<SuspenseFallback />}>
             <WebLayout>
               <Home />
+            </WebLayout>
+          </Suspense>
+        </Route>
+        <Route path="/login" exact>
+          <Suspense fallback={<SuspenseFallback />}>
+            <WebLayout>
+              <SignIn />
             </WebLayout>
           </Suspense>
         </Route>
