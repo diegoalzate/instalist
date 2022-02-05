@@ -7,6 +7,8 @@ import { CgSpinner } from 'react-icons/cg';
 
 // UI
 import 'react-phone-number-input/style.css';
+import { useHistory } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 interface IFormValues {
 	phone: string;
@@ -53,14 +55,15 @@ const schema = {
 };
 
 const SignIn = () => {
+  const history = useHistory()
   const [loading, setLoading] = useState<boolean>(false)
-  const [phone, setPhone] = useState('');
+  const { isAuthenticated } = useAuth()
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
   const [optCode, setOtpCode] = useState<string>("")
   const [formState, setFormState] = useState<IFormState>({
     isValid: false,
     values: {
-      phone: phone ? phone : '',
+      phone: '',
       termsAndConditions: 0,
     },
     touched: {
@@ -71,12 +74,20 @@ const SignIn = () => {
   });
 
   useEffect(() => {
+    if (isAuthenticated) {
+      history.push('/')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated])
+
+  useEffect(() => {
     const errors: Object = validate(formState.values, schema);
     setFormState({
       ...formState,
       isValid: !errors,
       errors,
     });
+    // eslint-disable-next-line
   }, [formState.values]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -112,22 +123,19 @@ const SignIn = () => {
     setLoading(true);
     event.preventDefault();
     if (formState.isValid) {
-      const { termsAndConditions, phone } = formState.values;
-      console.log('Submitting Data');
+      const { phone } = formState.values;
 
-      // let { user, error } = await supabase.auth.signIn({
-      //   phone: phone
-      // })
-
-      const error = undefined
+      let { error } = await supabase.auth.signIn({
+        phone: phone
+      })
 
       if (error) {
         console.log({ error })
+        resetInputValues()
       } else {
         setIsSubmitted(true)
       }
     }
-    resetInputValues()
     setLoading(false);
   };
 
@@ -146,23 +154,25 @@ const SignIn = () => {
     })
   }
 
-  const onSubmitVerify = (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmitVerify = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(optCode)
+
+    let { session, error } = await supabase.auth.verifyOTP({
+      phone: formState.values.phone,
+      token: optCode,
+    })
+
+    if (error) {
+      console.log({ error })
+    } else {
+      console.log('Logeado')
+      console.log(session)
+    }
     setIsSubmitted(false)
     setOtpCode('')
+    resetInputValues()
   }
 
-  // const signIn = async (phone: string) => {
-  //   if (!phone) return
-      
-
-  //   if (error) {
-  //       console.log({ error })
-  //   } else {
-  //       setIsSubmitted(true)
-  //     }
-  // }
 
   return (
     <div>
