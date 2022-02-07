@@ -5,7 +5,7 @@ export interface IState {
   loading: boolean
   error: any
   success?: boolean
-  toggleRegister: (register?: boolean) => void
+  toggleRegister: () => void
   signInHandler: (email: string, password: string) => void
 }
 

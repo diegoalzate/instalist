@@ -1,36 +1,39 @@
 import React, { useEffect, useState } from 'react';
-// import { supabase } from '../client';
 import { passwordPattern, phonePattern } from '../utils/validations';
 import PhoneInput from 'react-phone-number-input';
 import { validate } from 'validate.js';
-import { useHistory } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { useForm } from 'react-hook-form'
+import { CgSpinner } from 'react-icons/cg';
 
 // UI
-import { CgSpinner } from 'react-icons/cg';
 import 'react-phone-number-input/style.css';
-
+import { useAuth } from '../context/AuthContext';
+import { IRegistration } from '../pages/SignUp';
+import { useForm } from 'react-hook-form';
 
 interface IFormInput {
   phone: string
   password: string
+  termsAndConditions: number;
 }
 
 interface IFormValues {
 	phone: string;
   password: string;
+  termsAndConditions: number;
 }
 
 interface ITouchValues {
   phone: boolean;
   password: boolean;
+  termsAndConditions: boolean;
 }
 
 interface IErrorValues {
   phone?: string[];
   password?: string[];
+  termsAndConditions?: string[];
 }
+
 interface IFormState {
   isValid: boolean;
   values: IFormValues;
@@ -38,12 +41,11 @@ interface IFormState {
   errors: IErrorValues;
 }
 
-export interface IState {
+interface IState {
   loading: boolean
   error: any
-  success?: boolean
-  toggleRegister: () => void
-  signInHandler: (email: string, password: string) => void
+  toggleRegister?: () => void
+  signUpHandler: IRegistration
 }
 
 const schema = {
@@ -73,31 +75,33 @@ const schema = {
       min: 8,
     },
   },
-};
+  termsAndConditions: {
+    numericality: {
+      noStrings: false,
+      equalTo: 1,
+      notEqualTo: 'must be checked',
+    },
+  },
+}
 
-const LoginForm = ({ signInHandler, toggleRegister, error, loading }: IState) => {
-  const history = useHistory()
+
+const SignUpForm = ({ loading, signUpHandler, toggleRegister }: IState) => {
   const { isAuthenticated } = useAuth()
   const { register } = useForm<IFormInput>()
   const [formState, setFormState] = useState<IFormState>({
     isValid: false,
     values: {
       phone: '',
+      termsAndConditions: 0,
       password: '',
     },
     touched: {
       phone: false,
+      termsAndConditions: false,
       password: false,
     },
     errors: {},
   });
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      history.push('/')
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated])
 
   useEffect(() => {
     const errors: Object = validate(formState.values, schema);
@@ -123,6 +127,21 @@ const LoginForm = ({ signInHandler, toggleRegister, error, loading }: IState) =>
     }))
   }
 
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = event.target;
+    setFormState({
+      ...formState,
+      values: {
+        ...formState.values,
+        [name]: +checked,
+      },
+      touched: {
+        ...formState.touched,
+        [name]: true,
+      },
+    });
+  };
+  
   const handlePhoneChange = (value: string) => {
     setFormState((formState) => ({
       ...formState,
@@ -137,29 +156,20 @@ const LoginForm = ({ signInHandler, toggleRegister, error, loading }: IState) =>
     }));
   };
 
-  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (formState.isValid) {
-      const { phone, password } = formState.values
-      signInHandler(phone, password)
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    const {
+      password,
+      phone,
+    } = formState.values
+    if (!formState.isValid) {
+      return
     }
-    resetInputValues()
-  };
-
-
-  const resetInputValues = () => {
-    setFormState({
-      isValid: false,
-      values: {
-        phone: '',
-        password: '',
-      },
-      touched: {
-        phone: false,
-        password: false,
-      },
-      errors: {},
-    })
+    try {
+      signUpHandler(phone, password)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -167,7 +177,7 @@ const LoginForm = ({ signInHandler, toggleRegister, error, loading }: IState) =>
       <div className="container m-auto min-h-screen flex items-center justify-center">
         <div className="border-gray-200 border-2 bg-white p-8 rounded shadow-2x1 ">
           <h2 className="text-xl font-bold mb-10 text-red-400">
-            Login
+            Sign Up
           </h2>
           {
             <form className="space-y-8" onSubmit={onSubmit}>
@@ -203,10 +213,23 @@ const LoginForm = ({ signInHandler, toggleRegister, error, loading }: IState) =>
               {formState.errors &&
                 formState.touched.password &&
                 (formState.errors.password || []).map((err, index) => (
-                  <p className="text-red-500 break-words"  key={index}>
+                  <p className="text-red-500" key={index}>
                     {err}
                   </p>
                 ))}
+            </div>
+            <div className="form-item flex items-center">
+              <label className="text-xs mr-2 text-gray-500">
+                I agree to the terms and privacy
+              </label>
+              <input
+                id="agree"
+                name="termsAndConditions"
+                type="checkbox"
+                className="text-red-400"
+                value={formState.values.termsAndConditions}
+                onChange={handleCheckboxChange}
+              />
             </div>
             <button
               disabled={!formState.isValid}
@@ -219,7 +242,7 @@ const LoginForm = ({ signInHandler, toggleRegister, error, loading }: IState) =>
               {loading ? <CgSpinner size={20} className="a-spinner" /> : 'Send'}
             </button>
               <div className="form-item text-center mb-8 md:col-start-2 lg:col-start-2 md:col-span-2 lg:col-auto">
-                <button type="button" onClick={toggleRegister} className="font-light text-red-400 hover:underline">Create Account</button>
+                <button type="button" onClick={toggleRegister} className="font-light text-red-400 hover:underline">I have an account</button>
               </div>
             </form>
           }
@@ -227,6 +250,6 @@ const LoginForm = ({ signInHandler, toggleRegister, error, loading }: IState) =>
       </div>
     </div>
   );
-};
+}
 
-export default LoginForm
+export default SignUpForm

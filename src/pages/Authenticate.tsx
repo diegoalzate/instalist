@@ -1,4 +1,6 @@
 import { useState, lazy } from "react"
+import { supabase } from "../client"
+import SignUp from "./SignUp"
 
 const Login = lazy(() => import("./Login"))
 //const SignUp = lazy(() => import("./SignUp"))
@@ -16,9 +18,25 @@ const Authenticate = () => {
 
   const handleSignIn = async (phone: string, password: string) => {
     console.log(phone, password)
+    try {
+      setAuthLoading(true)
+      const response = await supabase.auth.signIn({
+        phone,
+        password
+      })
+      console.log(response)
+      setAuthLoading(false)
+      setSuccess(true)
+    } catch (err) {
+      setAuthLoading(false)
+      setSuccess(false)
+      setLocalError(err)
+    }
   }
 
-  //const handleSignUp
+  const handleSignUp = async (phone: string, password: string) => {
+    console.log(phone, password)
+  }
 
   //const handleConfirm
 
@@ -31,6 +49,14 @@ const Authenticate = () => {
           error={localError}
           toggleRegister={toggleRegister}
           success={success}
+        />
+      )}
+      {register && !confirm && (
+        <SignUp 
+          signUpHandler={handleSignUp}
+          loading={authLoading}
+          error={localError}
+          toggleRegister={toggleRegister}    
         />
       )}
     </>
