@@ -5,32 +5,38 @@ import WebLayout from './containers/Layout'
 import { ChakraProvider } from '@chakra-ui/react'
 // components
 import SuspenseFallback from './components/shared/SuspenseFallback'
-import Authenticate from './pages/Authenticate'
 
 // pages
 const Home = lazy(() => import('./pages/Home'))
+const List = lazy(() => import('./pages/List'))
+const Authenticate = lazy(() => import('./pages/Authenticate'))
 
 function App() {
   return (
     <div className="App">
-      <ChakraProvider>
-        <Switch>
-          <Route path="/" exact>
-            <Suspense fallback={<SuspenseFallback/>}>
-              <WebLayout>
-                <Home/>
-              </WebLayout>
-            </Suspense>
-          </Route>
-          <Route path="/login" exact>
-            <Suspense fallback={<SuspenseFallback />}>
-              <WebLayout>
-                <Authenticate />
-              </WebLayout>
-            </Suspense>
-          </Route>
-        </Switch>
-      </ChakraProvider>
+      <Switch>
+        <Route path="/list" exact>
+          <Suspense fallback={<SuspenseFallback />}>
+            <WebLayout>
+              <List />
+            </WebLayout>
+          </Suspense>
+        </Route>
+        <Route path="/" exact>
+          <Suspense fallback={<SuspenseFallback />}>
+            <WebLayout>
+              <Home />
+            </WebLayout>
+          </Suspense>
+        </Route>
+        <Route path="/login" exact>
+          <Suspense fallback={<SuspenseFallback />}>
+            <WebLayout>
+              <Authenticate />
+            </WebLayout>
+          </Suspense>
+        </Route>
+      </Switch>
     </div>
   )
 }

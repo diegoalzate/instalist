@@ -1,16 +1,16 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './App'
 import { BrowserRouter as Router } from 'react-router-dom'
-import { AuthProvider } from './context/AuthContext'
+import { ChakraProvider } from '@chakra-ui/react'
 
 ReactDOM.render(
   <React.StrictMode>
-    <AuthProvider>
-      <Router>
+    <Router>
+      <ChakraProvider>
         <App />
-      </Router>
-    </AuthProvider>
+      </ChakraProvider>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
-);
+)
