@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { passwordPattern, phonePattern } from '../utils/validations';
-import PhoneInput from 'react-phone-number-input';
 import { validate } from 'validate.js';
-import { CgSpinner } from 'react-icons/cg';
+import { IRegistration } from '../pages/SignUp';
+import { useForm } from 'react-hook-form';
 
 // UI
 import 'react-phone-number-input/style.css';
-import { useAuth } from '../context/AuthContext';
-import { IRegistration } from '../pages/SignUp';
-import { useForm } from 'react-hook-form';
+import { CgSpinner } from 'react-icons/cg';
+import PhoneInput from 'react-phone-number-input';
+
 
 interface IFormInput {
   phone: string
@@ -86,7 +86,6 @@ const schema = {
 
 
 const SignUpForm = ({ loading, signUpHandler, toggleRegister }: IState) => {
-  const { isAuthenticated } = useAuth()
   const { register } = useForm<IFormInput>()
   const [formState, setFormState] = useState<IFormState>({
     isValid: false,

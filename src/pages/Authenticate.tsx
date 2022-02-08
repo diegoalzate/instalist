@@ -1,11 +1,15 @@
 import { useState, lazy } from "react"
 import { supabase } from "../client"
-import SignUp from "./SignUp"
+import { useHistory } from 'react-router-dom';
 
 const Login = lazy(() => import("./Login"))
-//const SignUp = lazy(() => import("./SignUp"))
+const SignUp = lazy(() => import("./SignUp"))
+const ConfirmationPin = lazy(() => import("./ConfirmationPin"))
 
 const Authenticate = () => {
+  // temp
+  const history = useHistory()
+
   const [register, setRegister] = useState(false)
   const [authLoading, setAuthLoading] = useState(false)
   const [confirm, setConfirm] = useState<boolean>(false)
@@ -19,7 +23,6 @@ const Authenticate = () => {
   }
 
   const handleSignIn = async (phone: string, password: string) => {
-    console.log(phone, password)
     setAuthLoading(true)
     try {
       const response = await supabase.auth.signIn({
@@ -37,7 +40,6 @@ const Authenticate = () => {
   }
 
   const handleSignUp = async (phone: string, password: string) => {
-    console.log(phone, password)
     setAuthLoading(true)
     try {
       const response = await supabase.auth.signUp({
@@ -58,7 +60,40 @@ const Authenticate = () => {
     }
   }
 
-  //const handleConfirm
+  const handleConfirm = async (token: string) => {
+    setAuthLoading(true)
+    if (!token || !phone) {
+      setAuthLoading(false)
+      setLocalError({
+        message: "Error with code or with phone"
+      })
+      return
+    }
+    try {
+      const response = await supabase.auth.verifyOTP({
+        phone,
+        token
+      })
+      if (response && response.session?.access_token) {
+        setAuthLoading(false)
+        setConfirm(false)
+        setLocalError(undefined)
+
+
+        //temp
+        history.push('/')
+
+      } else {
+        setAuthLoading(false)
+        setConfirm(true)
+        setLocalError({ message: response })
+      }
+    } catch (err) {
+      setAuthLoading(false)
+      setSuccess(false)
+      setLocalError(err)
+    }
+  }
 
   return (
     <>
@@ -78,6 +113,14 @@ const Authenticate = () => {
           error={localError}
           toggleRegister={toggleRegister}    
         />
+      )}
+      {!register && confirm && (
+        <ConfirmationPin
+          handleConfirm={handleConfirm}
+          loading={authLoading}
+          error={localError}
+          phone={phone}
+         />
       )}
     </>
   )
