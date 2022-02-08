@@ -11,6 +11,8 @@ const Authenticate = () => {
   const [confirm, setConfirm] = useState<boolean>(false)
   const [success, setSuccess] = useState(false)
   const [localError, setLocalError] = useState<any>()
+  const [phone, setPhone] = useState<string | undefined>()
+
 
   const toggleRegister = () => {
     setRegister(!register)
@@ -18,8 +20,8 @@ const Authenticate = () => {
 
   const handleSignIn = async (phone: string, password: string) => {
     console.log(phone, password)
+    setAuthLoading(true)
     try {
-      setAuthLoading(true)
       const response = await supabase.auth.signIn({
         phone,
         password
@@ -36,6 +38,24 @@ const Authenticate = () => {
 
   const handleSignUp = async (phone: string, password: string) => {
     console.log(phone, password)
+    setAuthLoading(true)
+    try {
+      const response = await supabase.auth.signUp({
+        phone,
+        password
+      })
+      console.log(response)
+      if (!response.error) {
+        setConfirm(true)
+        setRegister(false)
+        setPhone(phone)
+        setAuthLoading(false)
+      }
+    } catch (err) {
+      setAuthLoading(false)
+      setSuccess(false)
+      setLocalError(err)
+    }
   }
 
   //const handleConfirm
