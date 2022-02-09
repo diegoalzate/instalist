@@ -4,10 +4,11 @@ import { Switch, Route } from 'react-router-dom'
 import WebLayout from './containers/Layout'
 // components
 import SuspenseFallback from './components/shared/SuspenseFallback'
+
 // pages
 const Home = lazy(() => import('./pages/Home'))
 const List = lazy(() => import('./pages/List'))
-const SignIn = lazy(() => import('./pages/SignIn'))
+const Authenticate = lazy(() => import('./pages/Authenticate'))
 
 function App() {
   return (
@@ -30,7 +31,7 @@ function App() {
         <Route path="/login" exact>
           <Suspense fallback={<SuspenseFallback />}>
             <WebLayout>
-              <SignIn />
+              <Authenticate />
             </WebLayout>
           </Suspense>
         </Route>

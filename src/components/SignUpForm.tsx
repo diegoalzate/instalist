@@ -1,29 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import { supabase } from '../client';
-import { phonePattern } from '../utils/validations';
-import PhoneInput from 'react-phone-number-input';
+import { passwordPattern, phonePattern } from '../utils/validations';
 import { validate } from 'validate.js';
-import { CgSpinner } from 'react-icons/cg';
+import { IRegistration } from '../pages/SignUp';
+import { useForm } from 'react-hook-form';
 
 // UI
 import 'react-phone-number-input/style.css';
-import { useHistory } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { CgSpinner } from 'react-icons/cg';
+import PhoneInput from 'react-phone-number-input';
+
+
+interface IFormInput {
+  phone: string
+  password: string
+  termsAndConditions: number;
+}
 
 interface IFormValues {
 	phone: string;
+  password: string;
   termsAndConditions: number;
 }
 
 interface ITouchValues {
   phone: boolean;
+  password: boolean;
   termsAndConditions: boolean;
 }
 
 interface IErrorValues {
   phone?: string[];
+  password?: string[];
   termsAndConditions?: string[];
 }
+
 interface IFormState {
   isValid: boolean;
   values: IFormValues;
@@ -31,11 +41,18 @@ interface IFormState {
   errors: IErrorValues;
 }
 
+interface IState {
+  loading: boolean
+  error: any
+  toggleRegister?: () => void
+  signUpHandler: IRegistration
+}
+
 const schema = {
   phone: {
     presence: {
       allowEmpty: false,
-      message: 'es requerido',
+      message: 'is required',
     },
     format: {
       pattern: phonePattern,
@@ -45,6 +62,19 @@ const schema = {
       max: 20,
     },
   },
+  password: {
+    presence: {
+      allowEmpty: false,
+      message: 'is required',
+    },
+    format: {
+      pattern: passwordPattern,
+      message: 'at least one letter and one number',
+    },
+    length: {
+      min: 8,
+    },
+  },
   termsAndConditions: {
     numericality: {
       noStrings: false,
@@ -52,45 +82,51 @@ const schema = {
       notEqualTo: 'must be checked',
     },
   },
-};
+}
 
-const SignIn = () => {
-  const history = useHistory()
-  const [loading, setLoading] = useState<boolean>(false)
-  const { isAuthenticated } = useAuth()
-  const [isSubmitted, setIsSubmitted] = useState<boolean>(false)
-  const [optCode, setOtpCode] = useState<string>("")
+
+const SignUpForm = ({ loading, signUpHandler, toggleRegister }: IState) => {
+  const { register } = useForm<IFormInput>()
   const [formState, setFormState] = useState<IFormState>({
     isValid: false,
     values: {
       phone: '',
       termsAndConditions: 0,
+      password: '',
     },
     touched: {
       phone: false,
       termsAndConditions: false,
+      password: false,
     },
     errors: {},
   });
 
   useEffect(() => {
-    if (isAuthenticated) {
-      history.push('/')
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated])
-
-  useEffect(() => {
     const errors: Object = validate(formState.values, schema);
     setFormState({
       ...formState,
-      isValid: !errors,
-      errors,
+      isValid: errors ? false : true,
+      errors: errors || {},
     });
     // eslint-disable-next-line
   }, [formState.values]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormState((formState) => ({
+      ...formState,
+      values: {
+        ...formState.values,
+        [event.target.name]: event.target.value,
+      },
+      touched: {
+        ...formState.touched,
+        [event.target.name]: true,
+      },
+    }))
+  }
+
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = event.target;
     setFormState({
       ...formState,
@@ -104,8 +140,8 @@ const SignIn = () => {
       },
     });
   };
-
-  const handlePhoneChange = (value: string) => {
+  
+  const handlePhoneChange = (value: any) => {
     setFormState((formState) => ({
       ...formState,
       values: {
@@ -119,70 +155,30 @@ const SignIn = () => {
     }));
   };
 
-  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    setLoading(true);
-    event.preventDefault();
-    if (formState.isValid) {
-      const { phone } = formState.values;
-
-      let { error } = await supabase.auth.signIn({
-        phone: phone
-      })
-
-      if (error) {
-        console.log({ error })
-        resetInputValues()
-      } else {
-        setIsSubmitted(true)
-      }
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    const {
+      password,
+      phone,
+    } = formState.values
+    if (!formState.isValid) {
+      return
     }
-    setLoading(false);
-  };
-
-  const resetInputValues = () => {
-    setFormState({
-      isValid: false,
-      values: {
-        phone: '',
-        termsAndConditions: 0
-      },
-      touched: {
-        phone: false,
-        termsAndConditions: false,
-      },
-      errors: {},
-    })
-  }
-
-  const onSubmitVerify = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    let { session, error } = await supabase.auth.verifyOTP({
-      phone: formState.values.phone,
-      token: optCode,
-    })
-
-    if (error) {
-      console.log({ error })
-    } else {
-      console.log('Logeado')
-      console.log(session)
+    try {
+      signUpHandler(phone, password)
+    } catch (error) {
+      console.log(error)
     }
-    setIsSubmitted(false)
-    setOtpCode('')
-    resetInputValues()
   }
-
 
   return (
     <div>
       <div className="container m-auto min-h-screen flex items-center justify-center">
         <div className="border-gray-200 border-2 bg-white p-8 rounded shadow-2x1 ">
           <h2 className="text-xl font-bold mb-10 text-red-400">
-            Log In
+            Sign Up
           </h2>
           {
-            !isSubmitted ?
             <form className="space-y-8" onSubmit={onSubmit}>
             <div className="form-item">
               <label className="block mb-1 font-bold text-sm text-gray-500">
@@ -190,12 +186,32 @@ const SignIn = () => {
               </label>
               <PhoneInput
                 placeholder="Enter phone number"
-                value={formState.values.phone}
+                value={formState.values.phone as any}
                 onChange={handlePhoneChange}
               />
               {formState.errors &&
                 formState.touched.phone &&
                 (formState.errors.phone || []).map((err, index) => (
+                  <p className="text-red-500" key={index}>
+                    {err}
+                  </p>
+                ))}
+            </div>
+            <div className="form-item">
+              <label className="block mb-1 font-bold text-sm text-gray-500">
+                Password
+              </label>
+              <input
+                type="password" {...register('password', { required: true })}
+                className="w-full"
+                disabled={!loading ? false : true}
+                value={formState.values.password}
+                tabIndex={-1}
+                onChange={handleChange}
+              />
+              {formState.errors &&
+                formState.touched.password &&
+                (formState.errors.password || []).map((err, index) => (
                   <p className="text-red-500" key={index}>
                     {err}
                   </p>
@@ -211,7 +227,7 @@ const SignIn = () => {
                 type="checkbox"
                 className="text-red-400"
                 value={formState.values.termsAndConditions}
-                onChange={handleChange}
+                onChange={handleCheckboxChange}
               />
             </div>
             <button
@@ -222,42 +238,17 @@ const SignIn = () => {
                   : 'block text-gray-100 rounded-lg hover:bg-blue-300  bg-red-400 w-full p-4 font-semibold '
               }
             >
-              {loading ? <CgSpinner size={20} className="a-spinner" /> : 'Send'}
+              {loading ? <CgSpinner size={20} className="a-spinner mx-auto" /> : 'Send'}
             </button>
+              <div className="form-item text-center mb-8 md:col-start-2 lg:col-start-2 md:col-span-2 lg:col-auto">
+                <button type="button" onClick={toggleRegister} className="font-light text-red-400 hover:underline">I have an account</button>
+              </div>
             </form>
-          :
-          <form className="space-y-8" onSubmit={onSubmitVerify}>
-            <div className="form-item">
-              <label className="block mb-1 font-bold text-sm text-gray-500">
-                  Verify Code
-              </label>
-              <input
-                id="otp"
-                name="otp-input"
-                type="text"
-                className="text-red-400"
-                value={optCode}
-                maxLength={6}
-                onChange={(e) => setOtpCode(e.target.value)}
-              />
-            </div>
-            <button
-              disabled={optCode.length !== 6}
-              className={
-                !(optCode.length === 6)
-                  ? 'block disabled:opacity-50 text-red-400 rounded-lg border-2 bg-gray-100 w-full p-4 font-semibold '
-                  : 'block text-gray-100 rounded-lg hover:bg-blue-300  bg-red-400 w-full p-4 font-semibold '
-              }
-            >
-              {loading ? <CgSpinner size={20} className="a-spinner" /> : 'Send'}
-            </button>
-          </form>
           }
-
         </div>
       </div>
     </div>
   );
-};
+}
 
-export default SignIn;
+export default SignUpForm

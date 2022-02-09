@@ -7,6 +7,7 @@ interface IAuthContext {
   loading: boolean
   user: any
   error: any
+  session: Session | null
 }
 
 interface AuthProviderOptions {
@@ -18,7 +19,7 @@ export const AuthContext = React.createContext<IAuthContext | null>(null)
 export const useAuth = () => useContext(AuthContext)!
 
 export const AuthProvider = ({ children }: AuthProviderOptions) => {
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [session, setSession] = useState<Session | null>(null)
   const [user, setUser] = useState<User | null> (null)
@@ -53,7 +54,6 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
   
   useEffect(() => {
     let isMounted = true
-    console.log('Hola')
     // subscribe to authchanges
     supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === 'SIGNED_IN') {
@@ -78,6 +78,7 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
         loading,
         user,
         error,
+        session
       }}
     >
       {children}
