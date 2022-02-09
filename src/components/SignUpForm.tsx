@@ -141,7 +141,7 @@ const SignUpForm = ({ loading, signUpHandler, toggleRegister }: IState) => {
     });
   };
   
-  const handlePhoneChange = (value: string) => {
+  const handlePhoneChange = (value: any) => {
     setFormState((formState) => ({
       ...formState,
       values: {
@@ -186,7 +186,7 @@ const SignUpForm = ({ loading, signUpHandler, toggleRegister }: IState) => {
               </label>
               <PhoneInput
                 placeholder="Enter phone number"
-                value={formState.values.phone}
+                value={formState.values.phone as any}
                 onChange={handlePhoneChange}
               />
               {formState.errors &&
@@ -238,7 +238,7 @@ const SignUpForm = ({ loading, signUpHandler, toggleRegister }: IState) => {
                   : 'block text-gray-100 rounded-lg hover:bg-blue-300  bg-red-400 w-full p-4 font-semibold '
               }
             >
-              {loading ? <CgSpinner size={20} className="a-spinner" /> : 'Send'}
+              {loading ? <CgSpinner size={20} className="a-spinner mx-auto" /> : 'Send'}
             </button>
               <div className="form-item text-center mb-8 md:col-start-2 lg:col-start-2 md:col-span-2 lg:col-auto">
                 <button type="button" onClick={toggleRegister} className="font-light text-red-400 hover:underline">I have an account</button>

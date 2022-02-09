@@ -2,7 +2,6 @@ import { Suspense, lazy } from 'react'
 import './assets/css/styles.css'
 import { Switch, Route } from 'react-router-dom'
 import WebLayout from './containers/Layout'
-import { ChakraProvider } from '@chakra-ui/react'
 // components
 import SuspenseFallback from './components/shared/SuspenseFallback'
 

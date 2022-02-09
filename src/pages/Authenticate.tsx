@@ -62,6 +62,7 @@ const Authenticate = () => {
 
   const handleConfirm = async (token: string) => {
     setAuthLoading(true)
+    console.log("token: ", token)
     if (!token || !phone) {
       setAuthLoading(false)
       setLocalError({

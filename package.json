@@ -3,12 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-<<<<<<< HEAD
-    "@chakra-ui/react": "^1.8.3",
-    "@craco/craco": "^6.2.0",
-=======
     "@chakra-ui/react": "^1.8.1",
->>>>>>> develop
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@heroicons/react": "^1.0.3",
@@ -20,7 +15,6 @@
     "@types/node": "^12.20.19",
     "@types/react": "^17.0.16",
     "@types/react-dom": "^17.0.9",
-    "framer-motion": "^5.6.0",
     "@types/react-phone-number-input": "^3.0.11",
     "framer-motion": "4.1.17",
     "react": "^17.0.2",
@@ -29,12 +23,8 @@
     "react-icons": "^4.2.0",
     "react-phone-number-input": "^3.1.25",
     "react-router-dom": "^5.2.0",
-<<<<<<< HEAD
-    "react-scripts": "4.0.3",
     "tslib": "^2.3.1",
-=======
     "react-scripts": "^5.0.0",
->>>>>>> develop
     "typescript": "^4.3.5",
     "validate": "^5.1.0",
     "validate.js": "^0.13.1",
