@@ -8,6 +8,7 @@ interface IAuthContext {
   user: any
   error: any
   session: Session | null
+  signOut: () => void
 }
 
 interface AuthProviderOptions {
@@ -29,7 +30,6 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
     setLoading(true)
     try {
       const session = await supabase.auth.session()
-
       setSession(session)
       setIsAuthenticated(handleIsAuthenticatedCheck(session))
       setError(null)
@@ -60,6 +60,10 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
         if (isMounted) {
           refreshState()
         }
+      } else if (event === 'SIGNED_OUT') {
+        if (isMounted) {
+          refreshState()
+        }
       } else {
         setLoading(false)
         setError(event)
@@ -71,6 +75,13 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
     }
   }, [refreshState])
 
+  const signOut = async () => {
+    setLoading(true)
+    const { error } = await supabase.auth.signOut()
+    setLoading(false)
+    if (error) return 
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -78,7 +89,8 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
         loading,
         user,
         error,
-        session
+        session,
+        signOut
       }}
     >
       {children}
