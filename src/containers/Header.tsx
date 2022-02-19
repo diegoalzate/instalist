@@ -1,4 +1,11 @@
-import { Button, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react'
+import {
+  Button,
+  Menu,
+  MenuButton,
+  MenuDivider,
+  MenuItem,
+  MenuList,
+} from '@chakra-ui/react'
 import { ChevronDownIcon, UserIcon, XIcon } from '@heroicons/react/outline'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
@@ -6,7 +13,9 @@ import { useAuth } from '../context/AuthContext'
 const Header = () => {
   return (
     <header className="fixed flex top-0 inset-x-0 bg-red-400 text-gray-100 font-semibold text-center px-6 align-middle justify-between border-gray-200 border-b-2 z-1000">
-      <h1 className="self-center">Instalist</h1>
+      <Link to="/" className='self-center'>
+        <h1>Instalist</h1>
+      </Link>
       <AuthDropdown />
     </header>
   )
@@ -32,30 +41,35 @@ const AuthDropdown = () => {
               _focus={{
                 backgroundColor: '--chakra-colors-primaryAction',
               }}
-              rightIcon={isOpen ? <XIcon width={20} /> : <ChevronDownIcon width={20} />}
+              rightIcon={
+                isOpen ? <XIcon width={20} /> : <ChevronDownIcon width={20} />
+              }
             >
               Hello, user
             </MenuButton>
-            <MenuList bgColor={'primary'} border={'none'}>
+            <MenuList bgColor={'white'} border={'primary'}>
               <MenuItem
-                _active={{
-                  backgroundColor: '--chakra-colors-primaryAction',
-                }}
                 _focus={{
-                  backgroundColor: '--chakra-colors-primaryAction',
+                  textColor: 'blue.400',
                 }}
+                _active={{
+                  textColor: 'green.400',
+                }}
+                textColor={'primary'}
               >
                 {' '}
                 Profile
               </MenuItem>
+              <MenuDivider />
               <MenuItem
                 onClick={signOut}
-                _active={{
-                  backgroundColor: '--chakra-colors-primaryAction',
-                }}
                 _focus={{
-                  backgroundColor: '--chakra-colors-primaryAction',
+                  textColor: 'blue.400',
                 }}
+                _active={{
+                  textColor: 'green.400',
+                }}
+                textColor={'primary'}
               >
                 {' '}
                 Sign out
