@@ -205,3 +205,10 @@ h1, h2, h3, h4, h5, h6{
     font-family: 'WorkSans';
 }
 
+.PhoneInputInput {
+  --tw-border-opacity: 1;
+  border-color: rgb(229 231 235 / var(--tw-border-opacity));
+  border-width: 2px;
+  border-radius: 0.5rem/* 8px */;
+}
+
