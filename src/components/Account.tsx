@@ -5,7 +5,7 @@ import { E164Number } from 'libphonenumber-js/types';
 
 const Account = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex py-10 items-center justify-center">
       <div className="border-gray-200 border-2 p-8 shadow-2x1 bg-white w-1/2 nt-10 rounded-lg">
         <div className="flex items-center pt-10 flex-col">
           <img src={Avatar} className="rounded-full border-solid border-red-400 border-4 scale-75"/>
@@ -62,8 +62,8 @@ const Account = () => {
               Sex
             </label>
             <div className='border-gray-200 border-2 rounded-lg'>
-              <button type="button" className="rounded-l inline-block px-6 py-2.5 bg-white w-1/2 leading-tight font-semibold hover:bg-red-300 hover:text-gray-100 focus:bg-red-400 focus:outline-none focus:text-gray-100 focus:ring-0 active:bg-red-400  transition duration-150 ease-in-out">Male</button>
-              <button type="button" className=" rounded-r inline-block px-6 py-2.5 bg-white w-1/2 leading-tight font-semibold hover:bg-red-300 hover:text-gray-100 focus:bg-red-400 focus:outline-none focus:text-gray-100 focus:ring-0 active:bg-red-400 transition duration-150 ease-in-out">Female</button>
+              <button type="button" className="rounded-l text-gray-500 inline-block px-6 py-2.5 bg-white w-1/2 leading-tight font-semibold hover:bg-red-300 hover:text-gray-100 focus:bg-red-400 focus:outline-none focus:text-gray-100 focus:ring-0 active:bg-red-400  transition duration-150 ease-in-out">Male</button>
+              <button type="button" className=" rounded-r text-gray-500 inline-block px-6 py-2.5 bg-white w-1/2 leading-tight font-semibold hover:bg-red-300 hover:text-gray-100 focus:bg-red-400 focus:outline-none focus:text-gray-100 focus:ring-0 active:bg-red-400 transition duration-150 ease-in-out">Female</button>
             </div>
           </div>
           <div className='flex items-center justify-center'>
