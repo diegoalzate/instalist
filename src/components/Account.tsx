@@ -48,25 +48,23 @@ const Account = () => {
           </div>
           <div className="form-item">
             <label className="block mb-1 font-bold text-sm text-gray-500">
-              Age
+              Age (Years)
             </label>
             <input
                 type="text"
                 className="w-full border-gray-200 border-2 rounded-lg"
                 tabIndex={-1}
-                placeholder='Age'
+                placeholder='Age (Years)'
               />
           </div>
           <div className="form-item">
             <label className="block mb-1 font-bold text-sm text-gray-500">
               Sex
             </label>
-            <input
-                type="text"
-                className="w-full border-gray-200 border-2 rounded-lg"
-                tabIndex={-1}
-                placeholder='Sex'
-              />
+            <div className='border-gray-200 border-2 rounded-lg'>
+              <button type="button" className="rounded-l inline-block px-6 py-2.5 bg-white w-1/2 leading-tight font-semibold hover:bg-red-300 hover:text-gray-100 focus:bg-red-400 focus:outline-none focus:text-gray-100 focus:ring-0 active:bg-red-400  transition duration-150 ease-in-out">Male</button>
+              <button type="button" className=" rounded-r inline-block px-6 py-2.5 bg-white w-1/2 leading-tight font-semibold hover:bg-red-300 hover:text-gray-100 focus:bg-red-400 focus:outline-none focus:text-gray-100 focus:ring-0 active:bg-red-400 transition duration-150 ease-in-out">Female</button>
+            </div>
           </div>
           <div className='flex items-center justify-center'>
             <button
