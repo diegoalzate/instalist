@@ -6,6 +6,8 @@ import { phonePattern } from '../utils/validations';
 import { useEffect, useState } from 'react';
 import validate from 'validate.js';
 import { CgSpinner } from 'react-icons/cg';
+import { supabase } from '../client';
+import { IUser } from '../utils/types';
 
 validate.validators.email.PATTERN = /^[a-z0-9\u007F-\uffff!#$%&'*+\/=?^_{|}~-]+(?:.[a-z0-9\u007F-\uffff!#$%&'*+/=?^_{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,}$|^$/i;
 
@@ -101,11 +103,12 @@ const schema = {
 const Account = () => {
   const [loading, setLoading] = useState(false)
   const [sex, setSex] = useState<String>('')
+  const [user, setUser] = useState<IUser>()
   const [formState, setFormState] = useState<IFormState>({
     isValid: false,
     values: {
       name: '',
-      phone: '+573024318825',
+      phone: '',
       email: '',
       age: 0,
       sex: '',
@@ -120,6 +123,37 @@ const Account = () => {
     errors: {}
   })
 
+  useEffect(() => {
+    setFormState((formState) => ({
+      ...formState,
+      values: {
+        phone: user?.phone ? `+${user.phone}` : '',
+        name: user?.name ?? '',
+        emaiL: user?.email ?? '',
+        age: parseInt(user?.age ?? '0'),
+        sex: user?.sex ?? '',
+      }
+    }))
+    setSex(user?.sex ?? '')
+  }, [user])
+
+  useEffect(() => {
+    const getUserInfo = async () => {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select()
+        .eq('id', '997948ee-b161-4fc3-80ff-9afa976d5f58')
+
+      console.log(data)
+      const userData = data?.[0]
+      if (userData) {
+        setUser(userData)
+      }
+    }
+
+    getUserInfo()
+  }, [])
+  
   useEffect(() => {
     const errors = validate(formState.values, schema)
     setFormState({
