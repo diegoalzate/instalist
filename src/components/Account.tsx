@@ -9,6 +9,7 @@ import { CgSpinner } from 'react-icons/cg';
 import { supabase } from '../client';
 import { IUser } from '../utils/types';
 
+// eslint-disable-next-line 
 validate.validators.email.PATTERN = /^[a-z0-9\u007F-\uffff!#$%&'*+\/=?^_{|}~-]+(?:.[a-z0-9\u007F-\uffff!#$%&'*+/=?^_{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,}$|^$/i;
 
 interface IFormValues {
@@ -124,16 +125,29 @@ const Account = () => {
   })
 
   useEffect(() => {
-    setFormState((formState) => ({
-      ...formState,
-      values: {
-        phone: user?.phone ? `+${user.phone}` : '',
-        name: user?.name ?? '',
-        emaiL: user?.email ?? '',
-        age: parseInt(user?.age ?? '0'),
-        sex: user?.sex ?? '',
-      }
-    }))
+    if (user?.email) {
+      setFormState((formState) => ({
+        ...formState,
+        values: {
+          phone: user?.phone ? `+${user.phone}` : '',
+          email: user?.email,
+          name: user?.name ?? '',
+          age: parseInt(user?.age ?? '0'),
+          sex: user?.sex ?? '',
+        }
+      }))
+    } else {
+      setFormState((formState) => ({
+        ...formState,
+        values: {
+          ...formState.values,
+          phone: user?.phone ? `+${user.phone}` : '',
+          name: user?.name ?? '',
+          age: parseInt(user?.age ?? '0'),
+          sex: user?.sex ?? '',
+        }
+      }))
+    }
     setSex(user?.sex ?? '')
   }, [user])
 
@@ -144,10 +158,14 @@ const Account = () => {
         .select()
         .eq('id', '997948ee-b161-4fc3-80ff-9afa976d5f58')
 
-      console.log(data)
-      const userData = data?.[0]
-      if (userData) {
-        setUser(userData)
+      if (error) {
+        console.log(error)
+        return
+      } else {
+        const userData = data?.[0]
+        if (userData) {
+          setUser(userData)
+        }
       }
     }
 
@@ -207,17 +225,31 @@ const Account = () => {
     }))
     setSex(value)
   }
+  const checkTouched = () => {
+    return formState.touched.age || 
+    formState.touched.email || 
+    formState.touched.name ||
+    formState.touched.sex
+  }
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (formState.isValid) {
-      setLoading(true)
-      
-      const formValues = formState.values
-      // const userGraph = (await API.graphql({ query: getTravelerByEmail, variables: { email: formValues.email } }) as { data: GetTravelerByEmailQuery })
+    setLoading(true)
+    if (formState.isValid && checkTouched()) {
+      const {phone, ...formValues} = formState.values
+
       console.log(formValues)
 
-      console.log('Sending Contact Data')
+      const { data, error } = await supabase
+        .from('profiles')
+        .update(formValues)
+        .eq('phone', phone?.replace('+',''))
+      if (data) {
+        console.log(data)
+        console.log('Data updated')
+      } else {
+        console.log(error)
+      }
     }
     setLoading(false)
   }
@@ -227,7 +259,7 @@ const Account = () => {
       <div className="border-gray-200 border-2 p-8 shadow-2x1 bg-white w-1/2 nt-10 rounded-lg">
         <div className="flex items-center pt-10 flex-col">
           <div className='-z-10'>
-            <img src={Avatar} className="rounded-full border-solid border-red-400 border-4 scale-75"/>
+            <img src={Avatar} alt="avatar" className="rounded-full border-solid border-red-400 border-4 scale-75"/>
           </div>
           <h2 className="text-xl font-bold mb-10 text-red-400">
             My Profile
