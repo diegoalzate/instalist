@@ -8,6 +8,7 @@ import validate from 'validate.js';
 import { CgSpinner } from 'react-icons/cg';
 import { supabase } from '../client';
 import { IUser } from '../utils/types';
+import { useAuth } from '../context/AuthContext';
 
 // eslint-disable-next-line 
 validate.validators.email.PATTERN = /^[a-z0-9\u007F-\uffff!#$%&'*+\/=?^_{|}~-]+(?:.[a-z0-9\u007F-\uffff!#$%&'*+/=?^_{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,}$|^$/i;
@@ -45,14 +46,6 @@ interface IFormState {
   touched: ITouchValues
   errors: IErrorValues
 }
-
-type CompleteRegistrationHandler = (
-  name: string,
-  phone: string,
-  email: string,
-  age: number,
-  sex: string,
-) => void
 
 const schema = {
   name: {
@@ -102,6 +95,7 @@ const schema = {
 
 
 const Account = () => {
+  const { session } = useAuth()
   const [loading, setLoading] = useState(false)
   const [sex, setSex] = useState<String>('')
   const [user, setUser] = useState<IUser>()
@@ -156,7 +150,7 @@ const Account = () => {
       const { data, error } = await supabase
         .from('profiles')
         .select()
-        .eq('id', '997948ee-b161-4fc3-80ff-9afa976d5f58')
+        .eq('id', session?.user?.id)
 
       if (error) {
         console.log(error)
@@ -168,8 +162,8 @@ const Account = () => {
         }
       }
     }
-
     getUserInfo()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   
   useEffect(() => {
@@ -296,12 +290,6 @@ const Account = () => {
               onChange={handlePhoneChange}
               disabled={true}
             />
-            {/* {formState.errors && formState.touched.phone &&
-              (formState.errors.phone || []).map((err, index) => (
-                <p className="text-red-400" key={index}>
-                  {err}
-                </p>
-            ))} */}
           </div>
           <div className="form-item">
             <label className="block mb-1 font-bold text-sm text-gray-500">

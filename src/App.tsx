@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router-dom'
 import WebLayout from './containers/Layout'
 // components
 import SuspenseFallback from './components/shared/SuspenseFallback'
+import ProtectedRoute from './components/ProtectedRoute'
 
 // pages
 const Home = lazy(() => import('./pages/Home'))
@@ -15,13 +16,13 @@ function App() {
   return (
     <div className="App">
       <Switch>
-        <Route path="/list" exact>
+        <ProtectedRoute path="/list" exact>
           <Suspense fallback={<SuspenseFallback />}>
             <WebLayout>
               <List />
             </WebLayout>
           </Suspense>
-        </Route>
+        </ProtectedRoute>
         <Route path="/" exact>
           <Suspense fallback={<SuspenseFallback />}>
             <WebLayout>

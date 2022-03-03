@@ -19,9 +19,11 @@ const Home = () => {
           <p>
             "It's a wishlist for instagram, it's not rocket science." - dev team
           </p>
-          <button className="font-WorkSans bg-red-400 hover:bg-blue-300 text-gray-100 text-lg font-semibold rounded-lg py-2 px-6 mx-auto">
-            <Link to={'/list'}>Start your list for free!</Link>
-          </button>
+          <Link to={'/list'} className="font-WorkSans bg-red-400 hover:bg-blue-300 text-gray-100 text-lg font-semibold rounded-lg py-2 px-6 mx-auto">
+            <button>
+              Start your list for free!
+            </button>
+          </Link>
         </div>
         <img
           className="my-10 sm:my-auto mx-auto w-3/5 sm:m-0 sm:w-4/5"
