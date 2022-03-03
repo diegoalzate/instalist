@@ -203,7 +203,7 @@ const SignUpForm = ({ loading, signUpHandler, toggleRegister }: IState) => {
               </label>
               <input
                 type="password" {...register('password', { required: true })}
-                className="w-full"
+                className="w-full border-gray-200 border-2 rounded-lg"
                 disabled={!loading ? false : true}
                 value={formState.values.password}
                 tabIndex={-1}

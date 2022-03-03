@@ -48,18 +48,20 @@ const AuthDropdown = () => {
               Hello, user
             </MenuButton>
             <MenuList bgColor={'white'} border={'primary'}>
-              <MenuItem
-                _focus={{
-                  textColor: 'blue.400',
-                }}
-                _active={{
-                  textColor: 'green.400',
-                }}
-                textColor={'primary'}
-              >
-                {' '}
-                Profile
-              </MenuItem>
+              <Link to="/profile">
+                <MenuItem
+                  _focus={{
+                    textColor: 'blue.400',
+                  }}
+                  _active={{
+                    textColor: 'green.400',
+                  }}
+                  textColor={'primary'}
+                >
+                  {' '}
+                  Profile
+                </MenuItem>
+              </Link>
               <MenuDivider />
               <MenuItem
                 onClick={signOut}
