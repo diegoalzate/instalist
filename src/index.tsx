@@ -4,7 +4,9 @@ import App from './App'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { ChakraProvider } from '@chakra-ui/react'
 import { AuthProvider } from './context/AuthContext'
-import { extendTheme } from "@chakra-ui/react"
+import { extendTheme } from '@chakra-ui/react'
+import { ReactQueryDevtools } from 'react-query/devtools'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 const theme = extendTheme({
   colors: {
@@ -14,15 +16,20 @@ const theme = extendTheme({
   },
 })
 
+const queryClient = new QueryClient()
+
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
-      <AuthProvider>
-        <ChakraProvider theme={theme}>
-          <App />
-        </ChakraProvider>
-      </AuthProvider>
-    </Router>
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <AuthProvider>
+          <ChakraProvider theme={theme}>
+            <App />
+            <ReactQueryDevtools />
+          </ChakraProvider>
+        </AuthProvider>
+      </Router>
+    </QueryClientProvider>
   </React.StrictMode>,
   document.getElementById('root')
 )
