@@ -9,6 +9,7 @@ import {
 import { ChevronDownIcon, UserIcon, XIcon } from '@heroicons/react/outline'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { useProfile } from '../hooks'
 
 const Header = () => {
   return (
@@ -22,11 +23,13 @@ const Header = () => {
 }
 
 const AuthDropdown = () => {
-  const { isAuthenticated, signOut } = useAuth()
+  const { signOut } = useAuth()
+  const { data } = useProfile()
+
   return (
     <Menu>
       {({ isOpen }) =>
-        isAuthenticated ? (
+        data ? (
           <>
             <MenuButton
               alignSelf={'center'}
@@ -45,7 +48,7 @@ const AuthDropdown = () => {
                 isOpen ? <XIcon width={20} /> : <ChevronDownIcon width={20} />
               }
             >
-              Hello, user
+              Hello, {data?.name ?? 'user'}
             </MenuButton>
             <MenuList bgColor={'white'} border={'primary'}>
               <Link to="/profile">
