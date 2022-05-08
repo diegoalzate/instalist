@@ -11,7 +11,7 @@ interface IWishForm {
 const WishForm = ({ value, handleChange, onClick, url }: IWishForm) => {
   const { isOpen, onToggle } = useDisclosure()
   return (
-    <div className='flex flex-col w-72 sm:w-96' >
+    <div className='flex flex-col w-full sm:w-96 flex-wrap p-4' >
           <Flex flexDirection={'row'} justifyContent={'space-between'} >
         <Input
           name="wish"
