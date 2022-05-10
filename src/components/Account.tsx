@@ -65,19 +65,6 @@ const schema = {
       maximum: 64,
     },
   },
-  phone: {
-    presence: {
-      allowEmpty: false,
-      message: 'is required',
-    },
-    format: {
-      pattern: phonePattern,
-      message: 'must be a valid phone number',
-    },
-    length: {
-      max: 20,
-    },
-  },
   age: {
     presence: {
       allowEmpty: true,
@@ -279,17 +266,6 @@ const Account = () => {
                   {err}
                 </p>
             ))}
-          </div>
-          <div className="form-item">
-            <label className="block mb-1 font-bold text-sm text-gray-500 ">
-              Phone*
-            </label>
-            <PhoneInput
-              placeholder="Enter phone number"
-              value={formState.values.phone as E164Number}
-              onChange={handlePhoneChange}
-              disabled={true}
-            />
           </div>
           <div className="form-item">
             <label className="block mb-1 font-bold text-sm text-gray-500">

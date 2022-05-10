@@ -7,14 +7,16 @@ export interface IState {
   success?: boolean
   toggleRegister: () => void
   signInHandler: (email: string, password: string) => void
+  signInWithDiscord: () => void
 }
 
-const Login = ({ signInHandler, toggleRegister, error, loading, success }: IState) => {
+const Login = ({ signInWithDiscord, signInHandler, toggleRegister, error, loading, success }: IState) => {
   return (
     <Fragment>
       <LoginForm
         error={error}
         signInHandler={signInHandler}
+        signInWithDiscord={signInWithDiscord}
         toggleRegister={toggleRegister}
         loading={loading}
         success={success} 

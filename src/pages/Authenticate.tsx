@@ -39,6 +39,22 @@ const Authenticate = () => {
     }
   }
 
+  const signInWithDiscord = async () => {
+    setAuthLoading(true)
+    try {
+      const { user, session, error } = await supabase.auth.signIn({
+        provider: 'discord',
+      })
+      console.log(user)
+      setAuthLoading(false)
+      setSuccess(true)
+    } catch (err) {
+      setAuthLoading(false)
+      setSuccess(false)
+      setLocalError(err)
+    }
+  }
+
   const handleSignUp = async (phone: string, password: string) => {
     setAuthLoading(true)
     try {
@@ -105,6 +121,7 @@ const Authenticate = () => {
           error={localError}
           toggleRegister={toggleRegister}
           success={success}
+          signInWithDiscord={signInWithDiscord}
         />
       )}
       {register && !confirm && (

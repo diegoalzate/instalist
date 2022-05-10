@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 // import { supabase } from '../client';
-import { passwordPattern, phonePattern } from '../utils/validations';
-import PhoneInput from 'react-phone-number-input';
-import { validate } from 'validate.js';
-import { useHistory } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { passwordPattern, phonePattern } from '../utils/validations'
+import PhoneInput from 'react-phone-number-input'
+import { validate } from 'validate.js'
+import { useHistory } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import { useForm } from 'react-hook-form'
 
 // UI
-import { CgSpinner } from 'react-icons/cg';
-import 'react-phone-number-input/style.css';
-
+import { CgSpinner } from 'react-icons/cg'
+import 'react-phone-number-input/style.css'
+import { Button, Center, Divider, VStack } from '@chakra-ui/react'
 
 interface IFormInput {
   phone: string
@@ -18,24 +18,24 @@ interface IFormInput {
 }
 
 interface IFormValues {
-	phone: string;
-  password: string;
+  phone: string
+  password: string
 }
 
 interface ITouchValues {
-  phone: boolean;
-  password: boolean;
+  phone: boolean
+  password: boolean
 }
 
 interface IErrorValues {
-  phone?: string[];
-  password?: string[];
+  phone?: string[]
+  password?: string[]
 }
 interface IFormState {
-  isValid: boolean;
-  values: IFormValues;
-  touched: ITouchValues;
-  errors: IErrorValues;
+  isValid: boolean
+  values: IFormValues
+  touched: ITouchValues
+  errors: IErrorValues
 }
 
 export interface IState {
@@ -44,6 +44,7 @@ export interface IState {
   success?: boolean
   toggleRegister: () => void
   signInHandler: (email: string, password: string) => void
+  signInWithDiscord: () => void
 }
 
 const schema = {
@@ -73,9 +74,15 @@ const schema = {
       min: 8,
     },
   },
-};
+}
 
-const LoginForm = ({ signInHandler, toggleRegister, error, loading }: IState) => {
+const LoginForm = ({
+  signInHandler,
+  toggleRegister,
+  error,
+  loading,
+  signInWithDiscord,
+}: IState) => {
   const history = useHistory()
   const { isAuthenticated } = useAuth()
   const { register } = useForm<IFormInput>()
@@ -90,7 +97,7 @@ const LoginForm = ({ signInHandler, toggleRegister, error, loading }: IState) =>
       password: false,
     },
     errors: {},
-  });
+  })
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -100,14 +107,14 @@ const LoginForm = ({ signInHandler, toggleRegister, error, loading }: IState) =>
   }, [isAuthenticated])
 
   useEffect(() => {
-    const errors: Object = validate(formState.values, schema);
+    const errors: Object = validate(formState.values, schema)
     setFormState({
       ...formState,
       isValid: errors ? false : true,
       errors: errors || {},
-    });
+    })
     // eslint-disable-next-line
-  }, [formState.values]);
+  }, [formState.values])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormState((formState) => ({
@@ -134,18 +141,17 @@ const LoginForm = ({ signInHandler, toggleRegister, error, loading }: IState) =>
         ...formState.touched,
         phone: true,
       },
-    }));
-  };
+    }))
+  }
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    event.preventDefault()
     if (formState.isValid) {
       const { phone, password } = formState.values
       signInHandler(phone, password)
     }
     resetInputValues()
-  };
-
+  }
 
   const resetInputValues = () => {
     setFormState({
@@ -166,11 +172,16 @@ const LoginForm = ({ signInHandler, toggleRegister, error, loading }: IState) =>
     <div>
       <div className="container m-auto min-h-screen flex items-center justify-center">
         <div className="border-gray-200 border-2 bg-white p-8 rounded shadow-2x1 ">
-          <h2 className="text-xl font-bold mb-10 text-red-400">
-            Login
-          </h2>
-          {
-            <form className="space-y-8" onSubmit={onSubmit}>
+          <h2 className="text-xl font-bold mb-10 text-red-400">Login</h2>
+          <VStack>
+            <Center>
+              <Button colorScheme="purple" backgroundColor={'#5865F2'} onClick={signInWithDiscord}>
+                Sign in with Discord
+              </Button>
+            </Center>
+          </VStack>
+          <Divider orientation='horizontal' my={4}/>
+          <form className="space-y-8" onSubmit={onSubmit}>
             <div className="form-item">
               <label className="block mb-1 font-bold text-sm text-gray-500">
                 Phone
@@ -193,7 +204,8 @@ const LoginForm = ({ signInHandler, toggleRegister, error, loading }: IState) =>
                 Password
               </label>
               <input
-                type="password" {...register('password', { required: true })}
+                type="password"
+                {...register('password', { required: true })}
                 className="w-full border-gray-200 border-2 rounded-lg"
                 disabled={!loading ? false : true}
                 value={formState.values.password}
@@ -203,7 +215,7 @@ const LoginForm = ({ signInHandler, toggleRegister, error, loading }: IState) =>
               {formState.errors &&
                 formState.touched.password &&
                 (formState.errors.password || []).map((err, index) => (
-                  <p className="text-red-500 break-words"  key={index}>
+                  <p className="text-red-500 break-words" key={index}>
                     {err}
                   </p>
                 ))}
@@ -216,17 +228,26 @@ const LoginForm = ({ signInHandler, toggleRegister, error, loading }: IState) =>
                   : 'block text-gray-100 rounded-lg hover:bg-blue-300  bg-red-400 w-full p-4 font-semibold '
               }
             >
-              {loading ? <CgSpinner size={20} className="a-spinner mx-auto" /> : 'Send'}
+              {loading ? (
+                <CgSpinner size={20} className="a-spinner mx-auto" />
+              ) : (
+                'Send'
+              )}
             </button>
-              <div className="form-item text-center mb-8 md:col-start-2 lg:col-start-2 md:col-span-2 lg:col-auto">
-                <button type="button" onClick={toggleRegister} className="font-light text-red-400 hover:underline">Create Account</button>
-              </div>
-            </form>
-          }
+            <div className="form-item text-center mb-8 md:col-start-2 lg:col-start-2 md:col-span-2 lg:col-auto">
+              <button
+                type="button"
+                onClick={toggleRegister}
+                className="font-light text-red-400 hover:underline"
+              >
+                Create Account
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 export default LoginForm
