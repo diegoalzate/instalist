@@ -24,7 +24,7 @@ const LoginForm = ({
 
   useEffect(() => {
     if (isAuthenticated) {
-      history.push('/')
+      history.push('/list')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated])
