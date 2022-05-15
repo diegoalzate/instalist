@@ -37,13 +37,13 @@ function App() {
             </WebLayout>
           </Suspense>
         </Route>
-        <Route path="/profile" exact>
+        <ProtectedRoute path="/profile" exact>
             <Suspense fallback={<SuspenseFallback />}>
               <WebLayout>
                 <Profile />
               </WebLayout>
             </Suspense>
-          </Route>
+          </ProtectedRoute>
       </Switch>
     </div>
   )

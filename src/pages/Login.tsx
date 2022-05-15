@@ -2,24 +2,18 @@ import { Fragment } from 'react'
 import LoginForm from '../components/LoginForm'
 
 export interface IState {
-  loading: boolean
-  error: any
-  success?: boolean
-  toggleRegister: () => void
-  signInHandler: (email: string, password: string) => void
   signInWithDiscord: () => void
+  signInWithOneTimeLink: (email: string) => void
+  loading: Boolean
 }
 
-const Login = ({ signInWithDiscord, signInHandler, toggleRegister, error, loading, success }: IState) => {
+const Login = ({ signInWithDiscord, signInWithOneTimeLink, loading }: IState) => {
   return (
     <Fragment>
       <LoginForm
-        error={error}
-        signInHandler={signInHandler}
-        signInWithDiscord={signInWithDiscord}
-        toggleRegister={toggleRegister}
         loading={loading}
-        success={success} 
+        signInWithDiscord={signInWithDiscord}
+        signInWithOneTimeLink={signInWithOneTimeLink} 
       />
     </Fragment>
   )

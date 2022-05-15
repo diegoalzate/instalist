@@ -16,7 +16,6 @@ validate.validators.email.PATTERN = /^[a-z0-9\u007F-\uffff!#$%&'*+\/=?^_{|}~-]+(
 interface IFormValues {
   [key: string]: string | number | boolean | undefined
   name?: string
-  phone?: string
   email?: string
   age?: number
   sex?: string
@@ -25,7 +24,6 @@ interface IFormValues {
 interface ITouchValues {
   [key: string]: string | number | boolean | undefined
   name?: boolean
-  phone?: boolean
   email?: boolean
   age?: boolean
   sex?: boolean
@@ -34,7 +32,6 @@ interface ITouchValues {
 interface IErrorValues {
   [key: string]: string[] | undefined
   name?: string[]
-  phone?: string[]
   email?: string[]
   age?: string[]
   sex?: string[]
@@ -90,14 +87,11 @@ const Account = () => {
     isValid: false,
     values: {
       name: '',
-      phone: '',
-      email: '',
       age: 0,
       sex: '',
     },
     touched: { 
       name: false,
-      phone: false,
       email: false,
       age: false,
       sex: false,
@@ -111,7 +105,6 @@ const Account = () => {
         ...formState,
         values: {
           phone: user?.phone ? `+${user.phone}` : '',
-          email: user?.email,
           name: user?.name ?? '',
           age: parseInt(user?.age ?? '0'),
           sex: user?.sex ?? '',
@@ -122,7 +115,6 @@ const Account = () => {
         ...formState,
         values: {
           ...formState.values,
-          phone: user?.phone ? `+${user.phone}` : '',
           name: user?.name ?? '',
           age: parseInt(user?.age ?? '0'),
           sex: user?.sex ?? '',
@@ -178,20 +170,6 @@ const Account = () => {
     })
   }
 
-  const handlePhoneChange = (value: E164Number) => {
-    setFormState((formState) => ({
-      ...formState,
-      values: {
-        ...formState.values,
-        phone: value
-      },
-      touched: {
-        ...formState.touched,
-        phone: true,
-      },
-    }))
-  }
-
   const handleSex = (value: string) => {
     setFormState((formState) => ({
       ...formState,
@@ -224,7 +202,7 @@ const Account = () => {
       const { data, error } = await supabase
         .from('profiles')
         .update(formValues)
-        .eq('phone', phone?.replace('+',''))
+        .eq('id', session?.user?.id)
       if (data) {
         console.log(data)
         console.log('Data updated')
@@ -277,8 +255,8 @@ const Account = () => {
               tabIndex={-1}
               placeholder='Email'
               name='email'
-              onChange={handleChange}
-              value={formState.values.email}
+              readOnly
+              value={user?.email}
             />
             {formState.errors && formState.touched.email &&
               (formState.errors.email || []).map((err, index) => (

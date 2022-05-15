@@ -55,6 +55,22 @@ const Authenticate = () => {
     }
   }
 
+  const signInWithOneTimeLink = async (email: string) => {
+    setAuthLoading(true)
+    try {
+      const { user } = await supabase.auth.signIn({
+        email
+      })
+      console.log(user)
+      setAuthLoading(false)
+      setSuccess(true)
+    } catch (err) {
+      setAuthLoading(false)
+      setSuccess(false)
+      setLocalError(err)
+    }
+  }
+
   const handleSignUp = async (phone: string, password: string) => {
     setAuthLoading(true)
     try {
@@ -116,11 +132,8 @@ const Authenticate = () => {
     <>
       {!register && !confirm && (
         <Login
-          signInHandler={handleSignIn}
           loading={authLoading}
-          error={localError}
-          toggleRegister={toggleRegister}
-          success={success}
+          signInWithOneTimeLink={signInWithOneTimeLink}
           signInWithDiscord={signInWithDiscord}
         />
       )}
