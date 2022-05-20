@@ -4,9 +4,20 @@ import {
   DeviceMobileIcon,
   EyeOffIcon,
 } from '@heroicons/react/outline'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { useProfile } from '../hooks/useProfile'
+import { useAuth } from '../context/AuthContext'
+import { useEffect } from 'react'
 const Home = () => {
+  const history = useHistory()
+  const { isAuthenticated } = useAuth()
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      history.push('/list')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated])
   return (
     <div className="pt-10">
       <AlertProfile />
