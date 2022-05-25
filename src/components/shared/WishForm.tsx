@@ -1,5 +1,5 @@
 import { Collapse, Flex, IconButton, Input, useDisclosure } from '@chakra-ui/react'
-import { LinkIcon, PlusIcon, XIcon } from '@heroicons/react/outline'
+import { CheckIcon, LinkIcon, XIcon } from '@heroicons/react/outline'
 
 interface IWishForm {
   value: string
@@ -33,7 +33,7 @@ const WishForm = ({ value, handleChange, onClick, url }: IWishForm) => {
         aria-label="Add wish"
         bgColor={'red.400'}
         textColor={'white'}
-        icon={<PlusIcon className="max-h-4" />}
+        icon={<CheckIcon className="max-h-4" />}
         onClick={onClick}
       />
       </div>

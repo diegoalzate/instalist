@@ -11,6 +11,7 @@ const Home = lazy(() => import('./pages/Home'))
 const List = lazy(() => import('./pages/List'))
 const Authenticate = lazy(() => import('./pages/Authenticate'))
 const Profile = lazy(() => import('./pages/Profile'))
+const CreateList = lazy(() => import('./pages/CreateList'))
 
 function App() {
   return (
@@ -43,7 +44,14 @@ function App() {
                 <Profile />
               </WebLayout>
             </Suspense>
-          </ProtectedRoute>
+        </ProtectedRoute>
+        <ProtectedRoute path="/create-list" exact>
+            <Suspense fallback={<SuspenseFallback />}>
+              <WebLayout>
+                <CreateList />
+              </WebLayout>
+            </Suspense>
+        </ProtectedRoute>
       </Switch>
     </div>
   )
