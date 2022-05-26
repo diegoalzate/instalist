@@ -1,9 +1,11 @@
 import { Flex, IconButton } from '@chakra-ui/react'
-import { MenuIcon } from '@heroicons/react/outline'
+import { MenuIcon, PlusIcon } from '@heroicons/react/outline'
 import { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { NavItem } from './NavItem'
 
 export const Sidebar = () => {
+  const history = useHistory()
   const [navSize, setNavSize] = useState<'large' | 'small'>('large')
   const toggleNavSize = () => {
     if (navSize === 'large') {
@@ -16,14 +18,15 @@ export const Sidebar = () => {
     <Flex
       pos={"sticky"}
       left="5"
-      h="95vh"
+      h="90vh"
       boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
       width={navSize === 'small' ? '60px' : '200px'}
       borderRadius={navSize === 'small' ? '15px' : '30px'}
       flexDir={'column'}
-      justifyContent={'flex-start'}
+      justifyContent={'space-between'}
+      p={'12px'}
     >
-      <Flex alignItems={'flex-start'} flexDir='column' as='nav' p={'8px'}>
+      <Flex alignItems={'flex-start'} flexDir='column' as='nav'>
           <IconButton 
             icon={<MenuIcon width={20}/>}
             aria-label={'menu button'}  
@@ -38,6 +41,13 @@ export const Sidebar = () => {
           <NavItem id='2' navSize={navSize} value='second' />
           <NavItem id='3' navSize={navSize} value='third'emoji='🥰' />
       </Flex>
+      <IconButton
+        aria-label="Add wish"
+        bgColor={'red.400'}
+        textColor={'white'}
+        icon={<PlusIcon className="max-h-4" />}
+        onClick={() => {history.push('/create-list')}}
+      />
     </Flex>
   )
 }
