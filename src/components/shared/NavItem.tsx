@@ -6,9 +6,10 @@ type NavItemPropsType = {
   value: string,
   id: string,
   active?: boolean
+  onClick: (id: string) => void
 }
 
-export const NavItem = ({navSize, value, active, emoji}: NavItemPropsType) => {
+export const NavItem = ({id, navSize, value, active, emoji, onClick}: NavItemPropsType) => {
   
   const emojiWithText = () => {
        if (navSize === 'large') {
@@ -59,7 +60,7 @@ export const NavItem = ({navSize, value, active, emoji}: NavItemPropsType) => {
           _hover={{ textDecor: '', backgroundColor: '--chakra-colors-primary'}}
           w={active ? '100%' : 'none'}
         >
-          <MenuButton>
+          <MenuButton onClick={() => {onClick(id)}}>
             {renderContent()}
           </MenuButton>
         </Link>

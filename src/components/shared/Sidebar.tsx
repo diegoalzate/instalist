@@ -4,11 +4,18 @@ import { useState } from 'react'
 import { CgSpinner } from 'react-icons/cg'
 import { useHistory } from 'react-router-dom'
 import { useList } from '../../hooks/useList'
+import { List } from '../../types'
 import { NavItem } from './NavItem'
 
-export const Sidebar = () => {
+type SidebarPropsType = {
+  lists?: List[]
+  selectedList?: List
+  handleSelectedList: (id: string) => void
+}
+
+export const Sidebar = ({lists, selectedList, handleSelectedList}: SidebarPropsType) => {
   const history = useHistory()
-  const { data, isLoading } = useList()
+  const { isLoading } = useList()
   const [navSize, setNavSize] = useState<'large' | 'small'>('large')
   const toggleNavSize = () => {
     if (navSize === 'large') {
@@ -43,13 +50,15 @@ export const Sidebar = () => {
         {isLoading ? (
           <CgSpinner size={20} className="a-spinner" />
         ) : (
-          data?.map((list) => (
+          lists?.map((list) => (
             <NavItem
+              key={list.id}
               id={list.id}
               navSize={navSize}
               value={list.name ?? ''}
               emoji={list.emoji}
-              active={true}
+              active={list.id === selectedList?.id}
+              onClick={handleSelectedList}
             />
           ))
         )}
