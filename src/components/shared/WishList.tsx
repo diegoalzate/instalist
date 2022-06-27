@@ -1,20 +1,32 @@
-import { Center, Flex } from '@chakra-ui/react'
-import { IWish } from '../../pages/List'
+import { Center, Flex, Skeleton } from '@chakra-ui/react'
+import { useItem } from '../../hooks'
+import { List } from '../../types'
 import Wish from './Wish'
 
-interface IWishListProps {
-  wishes: IWish[]
-  deleteHandler: (wish: IWish) => void
+type WishListProps = {
+  selectedList?: List
 }
 
-const WishList = ({ wishes, deleteHandler }: IWishListProps) => {
+const WishList = ({ selectedList }: WishListProps) => {
+  const { data: items, isLoading } = useItem({ selectedList })
+
   return (
     <Center>
-      <Flex direction={'column-reverse'}>
-        {wishes.map((wish, i) => (
-          <Wish key={i} wish={wish} deleteHandler={deleteHandler} />
-        ))}
-      </Flex>
+      {isLoading ? (
+        <Skeleton height="20px" />
+      ) : (
+        <Flex direction={'column-reverse'}>
+          {items?.map((item, i) => (
+            <Wish
+              key={i}
+              name={item.name}
+              url={item.url}
+              id={item.id}
+              bought={false}
+            />
+          ))}
+        </Flex>
+      )}
     </Center>
   )
 }

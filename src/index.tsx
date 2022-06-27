@@ -16,7 +16,7 @@ const theme = extendTheme({
   },
 })
 
-const queryClient = new QueryClient()
+export const queryClient = new QueryClient()
 
 ReactDOM.render(
   <React.StrictMode>
