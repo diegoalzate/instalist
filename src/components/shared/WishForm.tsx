@@ -1,4 +1,10 @@
-import { Collapse, Flex, IconButton, Input, useDisclosure } from '@chakra-ui/react'
+import {
+  Collapse,
+  Flex,
+  IconButton,
+  Input,
+  useDisclosure,
+} from '@chakra-ui/react'
 import { CheckIcon, LinkIcon, XIcon } from '@heroicons/react/outline'
 
 interface IWishForm {
@@ -11,44 +17,49 @@ interface IWishForm {
 const WishForm = ({ value, handleChange, onClick, url }: IWishForm) => {
   const { isOpen, onToggle } = useDisclosure()
   return (
-    <div className='flex flex-col w-full sm:w-96 flex-wrap p-4' >
-          <Flex flexDirection={'row'} justifyContent={'space-between'} >
+    <div className="flex flex-col w-full sm:w-96 flex-wrap p-4">
+      <Flex flexDirection={'row'} justifyContent={'space-between'}>
         <Input
           name="wish"
           onChange={handleChange}
           value={value}
           focusBorderColor="red.200"
           placeholder="Write wish here"
-          mr="4" 
-       
+          mr="4"
         />
-      <div className='flex'>
-      <IconButton
-        aria-label="Add link"
-        icon={isOpen ? <XIcon className='max-h-4'/>  : <LinkIcon className="max-h-4" />}
-        className="mr-2"
-        onClick={onToggle}
-      />
-      <IconButton
-        aria-label="Add wish"
-        bgColor={'red.400'}
-        textColor={'white'}
-        icon={<CheckIcon className="max-h-4" />}
-        onClick={onClick}
-      />
-      </div>
-    </Flex>
-            <Collapse in={isOpen} animateOpacity>
-          <Input
-            name="url"
-            onChange={handleChange}
-            value={url}
-            focusBorderColor="red.200"
-            placeholder="url"
-            w={'full'}
-            mt={'2'}
+        <div className="flex">
+          <IconButton
+            aria-label="Add link"
+            icon={
+              isOpen ? (
+                <XIcon className="max-h-4" />
+              ) : (
+                <LinkIcon className="max-h-4" />
+              )
+            }
+            className="mr-2"
+            onClick={onToggle}
           />
-        </Collapse>
+          <IconButton
+            aria-label="Add wish"
+            bgColor={'red.400'}
+            textColor={'white'}
+            icon={<CheckIcon className="max-h-4" />}
+            onClick={onClick}
+          />
+        </div>
+      </Flex>
+      <Collapse in={isOpen} animateOpacity>
+        <Input
+          name="url"
+          onChange={handleChange}
+          value={url}
+          focusBorderColor="red.200"
+          placeholder="url"
+          w={'full'}
+          mt={'2'}
+        />
+      </Collapse>
     </div>
   )
 }

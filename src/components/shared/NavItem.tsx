@@ -51,6 +51,7 @@ export const NavItem = ({id, navSize, value, active, emoji, onClick}: NavItemPro
       mt={30}
       w="100%"
       alignItems={navSize === 'small' ? 'center' : 'start'}
+      onClick={() => {onClick(id)}}
     >
       <Menu  placement="right">
         <Link
@@ -60,7 +61,7 @@ export const NavItem = ({id, navSize, value, active, emoji, onClick}: NavItemPro
           _hover={{ textDecor: '', backgroundColor: '--chakra-colors-primary'}}
           w={active ? '100%' : 'none'}
         >
-          <MenuButton onClick={() => {onClick(id)}}>
+          <MenuButton>
             {renderContent()}
           </MenuButton>
         </Link>
