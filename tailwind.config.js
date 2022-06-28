@@ -6,10 +6,7 @@ module.exports = {
       colors: {
       transparent: 'transparent',
       current: 'currentColor',
-      gray: colors.gray,
-      blue: colors.sky,
-      red: colors.rose,
-      pink: colors.fuchsia,
+      ...colors
     },
       fontFamily: {
         'WorkSans': ['WorkSans'],

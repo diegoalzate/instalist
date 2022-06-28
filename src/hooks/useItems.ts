@@ -7,11 +7,9 @@ type useItemProps = {
     selectedList?:  List
 }
 
-export const useItem = ({selectedList}: useItemProps) => {
-    const { session } = useAuth()
-
+export const useItems = ({selectedList}: useItemProps) => {
     return useQuery(
-      `${selectedList?.id}.items`,
+      ['Items', selectedList?.id],
       async () => {
         const { data, error } = await supabase
           .from('items')
@@ -23,7 +21,7 @@ export const useItem = ({selectedList}: useItemProps) => {
         return data as Item[]
       },
       {
-        enabled: !!session?.user?.id && !!selectedList?.id,
+        enabled: !!selectedList?.id,
       }
     )
 }

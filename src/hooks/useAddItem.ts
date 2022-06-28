@@ -24,7 +24,7 @@ export const useAddItem = () => {
     },
     {
       onSuccess: (res) => {
-        queryClient.invalidateQueries( `${res?.listId}.items`)
+        queryClient.invalidateQueries( `${res?.listId}.Items`)
       },
     }
   )
