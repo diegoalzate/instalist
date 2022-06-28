@@ -12,7 +12,7 @@ export const useDeleteList = () => {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries('List')
+        queryClient.invalidateQueries('Lists')
       },
     }
   )

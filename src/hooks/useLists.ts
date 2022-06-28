@@ -3,11 +3,11 @@ import { supabase } from '../client'
 import { useAuth } from '../context/AuthContext'
 import { List } from '../types'
 
-export const useList = () => {
+export const useLists = () => {
   const { session } = useAuth()
 
   return useQuery(
-    'List',
+    'Lists',
     async () => {
       const { data, error } = await supabase
         .from('lists')

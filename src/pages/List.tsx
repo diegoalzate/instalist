@@ -1,4 +1,13 @@
-import { Button, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react'
+import {
+  Button,
+  Flex,
+  Input,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  useClipboard,
+} from '@chakra-ui/react'
 import { DotsVerticalIcon } from '@heroicons/react/outline'
 import { useEffect, useState } from 'react'
 import { Sidebar } from '../components/shared/Sidebar'
@@ -6,7 +15,7 @@ import WishForm from '../components/shared/WishForm'
 import WishList from '../components/shared/WishList'
 import { useDeleteList } from '../hooks'
 import { useAddItem } from '../hooks/useAddItem'
-import { useList } from '../hooks/useList'
+import { useLists } from '../hooks/useLists'
 import { List as ListType } from '../types'
 
 export interface IWish {
@@ -17,12 +26,17 @@ export interface IWish {
 
 const List = () => {
   const [form, setForm] = useState<IWish>()
-  const { data } = useList()
+  const { data } = useLists()
   const { mutate: saveItem } = useAddItem()
   const [selectedList, setSelectedList] = useState<ListType | undefined>()
   const { mutate: deletelist } = useDeleteList()
+  const [showShare, setShowShare] = useState(false)
+  const { hasCopied, onCopy } = useClipboard(
+    `${window.location.origin}/list/${selectedList?.id}`
+  )
+
   useEffect(() => {
-    if (!selectedList || !data?.find(list => list.id === selectedList.id)) {
+    if (!selectedList || !data?.find((list) => list.id === selectedList.id)) {
       setSelectedList(data?.[0])
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -89,9 +103,37 @@ const List = () => {
                 rounded={'md'}
                 _focus={{ backgroundColor: 'inherit' }}
                 _hover={{ backgroundColor: 'whatsapp.100' }}
-                onClick={async () => {deletelist({id: selectedList?.id})}}
+                onClick={async () => {
+                  deletelist({ id: selectedList?.id })
+                }}
               >
                 Delete
+              </MenuItem>
+              <MenuItem
+                rounded={'md'}
+                _focus={{ backgroundColor: 'inherit' }}
+                _hover={{ backgroundColor: `${!showShare && 'whatsapp.100'}` }}
+                onClick={async () => {
+                  if (!showShare) {
+                    setShowShare(true)
+                    setTimeout(() => {setShowShare(false)}, 4000)
+                  }
+                }}
+                closeOnSelect={false}
+              >
+                {showShare ? (
+                  <Flex mb={2}>
+                    <Input
+                      value={`${window.location.origin}/list/${selectedList?.id}`}
+                      isReadOnly
+                    />
+                    <Button onClick={() => {onCopy()}} ml={2}>
+                      {hasCopied ? 'Copied' : 'Copy'}
+                    </Button>
+                  </Flex>
+                ) : (
+                  'Share'
+                )}
               </MenuItem>
             </MenuList>
           </Menu>

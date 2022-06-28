@@ -12,6 +12,7 @@ const List = lazy(() => import('./pages/List'))
 const Authenticate = lazy(() => import('./pages/Authenticate'))
 const Profile = lazy(() => import('./pages/Profile'))
 const CreateList = lazy(() => import('./pages/CreateList'))
+const Guest = lazy(() => import('./pages/Guest'))
 
 function App() {
   return (
@@ -39,22 +40,29 @@ function App() {
           </Suspense>
         </Route>
         <ProtectedRoute path="/profile" exact>
-            <Suspense fallback={<SuspenseFallback />}>
-              <WebLayout>
-                <Profile />
-              </WebLayout>
-            </Suspense>
+          <Suspense fallback={<SuspenseFallback />}>
+            <WebLayout>
+              <Profile />
+            </WebLayout>
+          </Suspense>
         </ProtectedRoute>
         <ProtectedRoute path="/create-list" exact>
-            <Suspense fallback={<SuspenseFallback />}>
-              <WebLayout>
-                <CreateList />
-              </WebLayout>
-            </Suspense>
+          <Suspense fallback={<SuspenseFallback />}>
+            <WebLayout>
+              <CreateList />
+            </WebLayout>
+          </Suspense>
         </ProtectedRoute>
+        <Route path="/list/:id" exact>
+          <Suspense fallback={<SuspenseFallback />}>
+            <WebLayout>
+              <Guest />
+            </WebLayout>
+          </Suspense>
+        </Route>
       </Switch>
     </div>
   )
 }
 
-export default App;
+export default App

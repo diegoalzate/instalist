@@ -14,7 +14,7 @@ export const useDeleteItem = () => {
     },
     {
       onSuccess: (res) => {
-        queryClient.invalidateQueries(`${res?.id}.items`)
+        queryClient.invalidateQueries(['Items', res.id])
       },
     }
   )

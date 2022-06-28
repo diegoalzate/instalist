@@ -5,7 +5,7 @@ import {
   EyeOffIcon,
 } from '@heroicons/react/outline'
 import { Link, useHistory } from 'react-router-dom'
-import { useProfile } from '../hooks/useProfile'
+import { useProfile } from '../hooks'
 import { useAuth } from '../context/AuthContext'
 import { useEffect } from 'react'
 const Home = () => {

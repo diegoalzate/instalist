@@ -1,5 +1,6 @@
 import { Center, Flex, Skeleton } from '@chakra-ui/react'
-import { useItem } from '../../hooks'
+import { useEffect, useState } from 'react'
+import { useItems, useProfile } from '../../hooks'
 import { List } from '../../types'
 import Wish from './Wish'
 
@@ -8,7 +9,17 @@ type WishListProps = {
 }
 
 const WishList = ({ selectedList }: WishListProps) => {
-  const { data: items, isLoading } = useItem({ selectedList })
+  const [owner, setOwner] = useState(false)
+  const {data: profile} = useProfile()
+  const { data: items, isLoading } = useItems({ selectedList })
+
+  useEffect(() => {
+    if (selectedList) {
+      if (profile?.id === selectedList.profile_id) {
+        setOwner(true)
+      }
+    }
+  }, [profile?.id, selectedList])
 
   return (
     <Center>
@@ -19,10 +30,8 @@ const WishList = ({ selectedList }: WishListProps) => {
           {items?.map((item, i) => (
             <Wish
               key={i}
-              name={item.name}
-              url={item.url}
-              id={item.id}
-              bought={false}
+              item={item}              
+              owner={owner}
             />
           ))}
         </Flex>

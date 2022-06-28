@@ -3,7 +3,7 @@ import { MenuIcon, PlusIcon } from '@heroicons/react/outline'
 import { useState } from 'react'
 import { CgSpinner } from 'react-icons/cg'
 import { useHistory } from 'react-router-dom'
-import { useList } from '../../hooks/useList'
+import { useLists } from '../../hooks/useLists'
 import { List } from '../../types'
 import { NavItem } from './NavItem'
 
@@ -15,7 +15,7 @@ type SidebarPropsType = {
 
 export const Sidebar = ({lists, selectedList, handleSelectedList}: SidebarPropsType) => {
   const history = useHistory()
-  const { isLoading } = useList()
+  const { isLoading } = useLists()
   const [navSize, setNavSize] = useState<'large' | 'small'>('large')
   const toggleNavSize = () => {
     if (navSize === 'large') {
