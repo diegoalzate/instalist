@@ -1,5 +1,5 @@
 import { useMutation } from 'react-query'
-import { queryClient } from '..'
+import { queryClient } from '../pages/_app'
 import { supabase } from '../client'
 type RemoveItemType = {
   id: string
@@ -13,8 +13,8 @@ export const useDeleteItem = () => {
       return item
     },
     {
-      onSuccess: (res) => {
-        queryClient.invalidateQueries(['Items', res.id])
+      onSuccess: async (res) => {
+        await queryClient.invalidateQueries(['Items', res.listId])
       },
     }
   )

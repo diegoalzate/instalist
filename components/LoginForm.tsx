@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 // import { supabase } from '../client';
-import { useHistory } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import { useAuth } from '../context/AuthContext'
 
 // UI
@@ -18,7 +18,7 @@ const LoginForm = ({
   signInWithOneTimeLink,
   loading
 }: IState) => {
-  const history = useHistory()
+  const history = useRouter()
   const { isAuthenticated } = useAuth()
   const [email, setEmail] = useState('')
 

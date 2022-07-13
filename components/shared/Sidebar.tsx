@@ -2,7 +2,7 @@ import { Flex, IconButton } from '@chakra-ui/react'
 import { MenuIcon, PlusIcon } from '@heroicons/react/outline'
 import { useState } from 'react'
 import { CgSpinner } from 'react-icons/cg'
-import { useHistory } from 'react-router-dom'
+import { useRouter } from 'next/router'
 import { useLists } from '../../hooks/useLists'
 import { List } from '../../types'
 import { NavItem } from './NavItem'
@@ -14,7 +14,7 @@ type SidebarPropsType = {
 }
 
 export const Sidebar = ({lists, selectedList, handleSelectedList}: SidebarPropsType) => {
-  const history = useHistory()
+  const history = useRouter()
   const { isLoading } = useLists()
   const [navSize, setNavSize] = useState<'large' | 'small'>('large')
   const toggleNavSize = () => {
@@ -30,7 +30,7 @@ export const Sidebar = ({lists, selectedList, handleSelectedList}: SidebarPropsT
       left="5"
       h="90vh"
       boxShadow="0 4px 12px 0 rgba(0, 0, 0, 0.05)"
-      width={navSize === 'small' ? '60px' : '200px'}
+      width={navSize === 'small' ? '80px' : '200px'}
       borderRadius={navSize === 'small' ? '15px' : '30px'}
       flexDir={'column'}
       justifyContent={'space-between'}
@@ -45,6 +45,7 @@ export const Sidebar = ({lists, selectedList, handleSelectedList}: SidebarPropsT
           _active={{
             backgroundColor: '--chakra-colors-primaryAction',
           }}
+          alignSelf={navSize === 'small' ? 'center' : 'flex-start'}
           onClick={toggleNavSize}
         />
         {isLoading ? (

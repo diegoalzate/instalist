@@ -1,9 +1,10 @@
 import { Button, Input } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { supabase } from '../client'
 import Picker, { IEmojiData, SKIN_TONE_MEDIUM_DARK } from 'emoji-picker-react'
 import { useProfile } from '../hooks'
-
+import { useRouter } from 'next/router'
+import { useAuth } from '../context/AuthContext'
 const CreateList = () => {
   const {data: profile} = useProfile()
   const [form, setForm] = useState({
@@ -11,6 +12,16 @@ const CreateList = () => {
     emoji: '⭐️',
   })
   const [showPicker, setShowPicker] = useState(false)
+  const { isAuthenticated } = useAuth()
+  const router = useRouter()
+  
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push('/')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated])
+  
   const createList = async () => {
     const { data } = await supabase.from('lists').insert({
       name: form.name,

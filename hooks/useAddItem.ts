@@ -1,5 +1,5 @@
 import { useMutation } from 'react-query'
-import { queryClient } from '..'
+import { queryClient } from '../pages/_app'
 import { supabase } from '../client'
 import { useAuth } from '../context/AuthContext'
 import { Item } from '../types'
@@ -14,17 +14,17 @@ export const useAddItem = () => {
 
   return useMutation(
     async (newItem: AddItemType) => {
-      await supabase.from('items').insert({
+      const res = await supabase.from('items').insert({
         name: newItem.name,
         url: newItem.url,
         list_id: newItem.listId,
         profile_id: session?.user?.id,
       } as Item)
-      return newItem
+      return res.body?.[0] as Item
     },
     {
-      onSuccess: (res) => {
-        queryClient.invalidateQueries( `${res?.listId}.Items`)
+      onSuccess: async (res) => {
+        await queryClient.invalidateQueries([`Items`, res?.list_id])
       },
     }
   )

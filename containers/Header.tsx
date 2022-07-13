@@ -7,15 +7,14 @@ import {
   MenuList,
 } from '@chakra-ui/react'
 import { ChevronDownIcon, UserIcon, XIcon } from '@heroicons/react/outline'
-import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { useProfile } from '../hooks'
-
+import Link from 'next/link'
 const Header = () => {
   return (
-    <header className="fixed flex top-0 inset-x-0 bg-red-400 text-gray-100 font-semibold text-center px-6 align-middle justify-between border-gray-200 border-b-2 z-1000">
-      <Link to="/" className='self-center'>
-        <h1>Instalist</h1>
+    <header className="sticky flex top-0 bg-red-400 text-gray-100 font-semibold text-center px-6 align-middle justify-between border-gray-200 border-b-2 z-50">
+      <Link href="/">
+        <h1 className='self-center'>Instalist</h1>
       </Link>
       <AuthDropdown />
     </header>
@@ -51,7 +50,7 @@ const AuthDropdown = () => {
               Hello, {data?.name ?? 'user'}
             </MenuButton>
             <MenuList bgColor={'white'} border={'primary'}>
-              <Link to="/profile">
+              <Link href="/profile">
                 <MenuItem
                   _focus={{
                     textColor: 'blue.400',
@@ -82,7 +81,7 @@ const AuthDropdown = () => {
             </MenuList>
           </>
         ) : (
-          <Link to="/login">
+          <Link href="/login">
             <MenuButton
               alignSelf={'center'}
               as={Button}

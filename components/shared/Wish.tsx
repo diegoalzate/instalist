@@ -1,12 +1,15 @@
 import { Skeleton } from '@chakra-ui/react'
 import { CheckCircleIcon, XIcon } from '@heroicons/react/outline'
-import { useState } from 'react'
-import { queryClient } from '../..'
+import { useEffect, useState } from 'react'
+import { queryClient } from '../../pages/_app'
 import { supabase } from '../../client'
 import { useProfile } from '../../hooks'
 import { useBoughtItem } from '../../hooks/useBoughtItem'
 import { useDeleteItem } from '../../hooks/useDeleteItem'
 import { Item } from '../../types'
+import { LinkPreview } from '@dhaiwat10/react-link-preview'
+
+const INSTAGRAM_HOSTNAME = "www.instagram.com";
 
 type WishProps = {
   item: Item
@@ -16,7 +19,11 @@ type WishProps = {
 const Wish = ({ item, owner }: WishProps) => {
   const { mutate } = useDeleteItem()
   const { mutate: boughtItem, isLoading } = useBoughtItem()
+  const [imageSrc, setImageSrc] = useState<string>()
   const { bought, name, url, id, list_id } = item
+  useEffect(() => {
+    fetchInstagramImage()
+  }, [item.url])
   const renderIcon = () => {
     if (isLoading) return <Skeleton h={10} />
     if (owner) {
@@ -41,6 +48,30 @@ const Wish = ({ item, owner }: WishProps) => {
       )
     }
   }
+
+  const fetchInstagramImage = async () => {
+    if (item.url) {
+      const url = new URL(item.url)
+      console.log(encodeURIComponent(url.toString()))
+      if (url.hostname === INSTAGRAM_HOSTNAME) {
+        try {
+          const response = await fetch(`${typeof window !== undefined && window.location.origin}/api/instagram`, {
+            method: "POST",
+            body: JSON.stringify({url: item.url})
+          })
+          const responsJSON = await response.json()
+          setImageSrc(responsJSON.thumbnail_url)
+          return {
+            title: responsJSON.author_name,
+            image: responsJSON.thumbnail_uz
+          }
+        } catch (e) {
+          console.error(e)
+        }
+      }
+    } 
+  }
+
   return (
     <div className="flex flex-col space-y-2 mb-2 rounded border-2 p-2 w-72 sm:w-96">
       {renderIcon()}
@@ -52,7 +83,7 @@ const Wish = ({ item, owner }: WishProps) => {
         </h1>
       )}
       <a href={url} target="_blank" rel="noreferrer" className={`text-sm`}>
-        {url}
+        <LinkPreview url={item.url ?? ""} descriptionLength={0} explicitImageSrc={imageSrc} imageHeight={"200px"} />
       </a>
     </div>
   )
