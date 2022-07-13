@@ -23,6 +23,7 @@ const Wish = ({ item, owner }: WishProps) => {
   const { bought, name, url, id, list_id } = item
   useEffect(() => {
     fetchInstagramImage()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item.url])
   const renderIcon = () => {
     if (isLoading) return <Skeleton h={10} />
@@ -52,7 +53,6 @@ const Wish = ({ item, owner }: WishProps) => {
   const fetchInstagramImage = async () => {
     if (item.url) {
       const url = new URL(item.url)
-      console.log(encodeURIComponent(url.toString()))
       if (url.hostname === INSTAGRAM_HOSTNAME) {
         try {
           const response = await fetch(`${typeof window !== undefined && window.location.origin}/api/instagram`, {

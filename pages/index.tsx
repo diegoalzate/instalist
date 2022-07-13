@@ -1,4 +1,5 @@
-import todoIllustration from '../assets/images/undraw_chore_list_re_2lq8.svg'
+/* eslint-disable react/no-unescaped-entities */
+import todoIllustration from '../public/images/undraw_chore_list_re_2lq8.svg'
 import {
   ShareIcon,
   DeviceMobileIcon,

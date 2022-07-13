@@ -5,8 +5,7 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import NextHead from "next/head";
 import WebLayout from '../containers/Layout'
-import '../assets/css/styles.css'
-
+import "@/styles/globals.css";
 const theme = extendTheme({
   colors: {
     primary: 'rgb(251 113 133)',
@@ -23,6 +22,9 @@ function MyApp({ Component, pageProps }: any) {
       <QueryClientProvider client={queryClient}>
           <AuthProvider>
             <ChakraProvider theme={theme}>
+              <NextHead >
+                <title>Instalist</title>
+              </NextHead>
               <WebLayout>
                <Component {...pageProps} /> 
               </WebLayout>

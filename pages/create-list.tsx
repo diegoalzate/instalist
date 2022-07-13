@@ -1,10 +1,25 @@
 import { Button, Input } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { supabase } from '../client'
-import Picker, { IEmojiData, SKIN_TONE_MEDIUM_DARK } from 'emoji-picker-react'
+import dynamic from 'next/dynamic';
 import { useProfile } from '../hooks'
 import { useRouter } from 'next/router'
 import { useAuth } from '../context/AuthContext'
+import data from '@emoji-mart/data'
+import { EmojiData, EmojiProps } from 'emoji-mart';
+
+const Picker = (props: any) => {
+  const ref: any = useRef()
+
+  useEffect(() => {
+    import('emoji-mart').then((EmojiMart) => {
+      new EmojiMart.Picker({ ...props, data, ref } as any)
+    })
+  }, [])
+
+  return <div ref={ref}/>
+}
+
 const CreateList = () => {
   const {data: profile} = useProfile()
   const [form, setForm] = useState({
@@ -43,10 +58,9 @@ const CreateList = () => {
   }
 
   const onEmojiClick = (
-    event: React.MouseEvent<Element, MouseEvent>,
-    emojiObject: IEmojiData
+    emoji: any
   ) => {
-    setForm((form) => ({ ...form, emoji: emojiObject.emoji }))
+    setForm((form) => ({ ...form, emoji: emoji.native }))
     setShowPicker((value) => !value)
   }
 
@@ -76,11 +90,10 @@ const CreateList = () => {
             </Button>
             {showPicker && (
               <Picker
-                onEmojiClick={onEmojiClick}
-                disableAutoFocus={true}
-                skinTone={SKIN_TONE_MEDIUM_DARK}
-                groupNames={{ smileys_people: 'PEOPLE' }}
-                native
+                onEmojiSelect={onEmojiClick}
+                size={20}
+                theme="light"
+                emoji={form.emoji}
               />
             )}
           </div>
