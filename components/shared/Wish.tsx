@@ -1,13 +1,10 @@
 import { Skeleton } from '@chakra-ui/react'
+import { LinkPreview } from '@dhaiwat10/react-link-preview'
 import { CheckCircleIcon, XIcon } from '@heroicons/react/outline'
 import { useEffect, useState } from 'react'
-import { queryClient } from '../../pages/_app'
-import { supabase } from '../../client'
-import { useProfile } from '../../hooks'
 import { useBoughtItem } from '../../hooks/useBoughtItem'
 import { useDeleteItem } from '../../hooks/useDeleteItem'
 import { Item } from '../../types'
-import { LinkPreview } from '@dhaiwat10/react-link-preview'
 
 const INSTAGRAM_HOSTNAME = "www.instagram.com";
 
@@ -23,6 +20,7 @@ const Wish = ({ item, owner }: WishProps) => {
   const { bought, name, url, id, list_id } = item
   useEffect(() => {
     fetchInstagramImage()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item.url])
   const renderIcon = () => {
     if (isLoading) return <Skeleton h={10} />
@@ -52,7 +50,6 @@ const Wish = ({ item, owner }: WishProps) => {
   const fetchInstagramImage = async () => {
     if (item.url) {
       const url = new URL(item.url)
-      console.log(encodeURIComponent(url.toString()))
       if (url.hostname === INSTAGRAM_HOSTNAME) {
         try {
           const response = await fetch(`${typeof window !== undefined && window.location.origin}/api/instagram`, {

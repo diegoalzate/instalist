@@ -1,14 +1,11 @@
-import PhoneInput from 'react-phone-number-input';
-import Avatar from '../assets/images/avatar.webp'
-import 'react-phone-number-input/style.css';
-import { E164Number } from 'libphonenumber-js/types';
-import { phonePattern } from '../utils/validations';
+import Avatar from '../public/images/avatar.webp'
 import { useEffect, useState } from 'react';
 import validate from 'validate.js';
 import { CgSpinner } from 'react-icons/cg';
 import { supabase } from '../client';
 import { IUser } from '../utils/types';
 import { useAuth } from '../context/AuthContext';
+import Image from 'next/image';
 
 // eslint-disable-next-line 
 validate.validators.email.PATTERN = /^[a-z0-9\u007F-\uffff!#$%&'*+\/=?^_{|}~-]+(?:.[a-z0-9\u007F-\uffff!#$%&'*+/=?^_{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,}$|^$/i;
@@ -218,7 +215,7 @@ const Account = () => {
       <div className="border-gray-200 border-2 p-8 shadow-2x1 bg-white w-1/2 nt-10 rounded-lg">
         <div className="flex items-center pt-10 flex-col">
           <div className='-z-10'>
-            <img src={Avatar} alt="avatar" className="rounded-full border-solid border-red-400 border-4 scale-75"/>
+            <Image src={Avatar} alt="avatar" className="rounded-full border-solid border-red-400 border-4 scale-75"/>
           </div>
           <h2 className="text-xl font-bold mb-10 text-red-400">
             My Profile

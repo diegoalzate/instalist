@@ -1,11 +1,9 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useEffect, useState } from 'react'
-// import { supabase } from '../client';
 import { useRouter } from 'next/router'
 import { useAuth } from '../context/AuthContext'
-
 // UI
 import { Button, Center, Divider, FormControl, FormHelperText, Input, VStack } from '@chakra-ui/react'
-import 'react-phone-number-input/style.css'
 import { CgSpinner } from 'react-icons/cg'
 export interface IState {
   loading: Boolean
