@@ -1,22 +1,24 @@
-import { lazy, useState } from 'react'
+import { Fragment, useState } from 'react'
 import { supabase } from '../client'
+import LoginForm from '../components/LoginForm'
 
-const Login = lazy(() => import('./Login'))
-const Authenticate = () => {
-  // temp
+
+const Login = () => {
   const [authLoading, setAuthLoading] = useState(false)
 
   const signInWithDiscord = async () => {
     setAuthLoading(true)
     try {
-      const { user, session, error } = await supabase.auth.signIn(
-        {
-          provider: 'discord',
-        },
-        { redirectTo: window.location.origin }
-      )
-      console.log(user)
-      setAuthLoading(false)
+      if (typeof window !== "undefined") {
+        const { user, session, error } = await supabase.auth.signIn(
+          {
+            provider: 'discord',
+          },
+          { redirectTo: typeof window !== "undefined" ? window.location.origin : '' }
+        )
+        console.log(user)
+        setAuthLoading(false)
+      }
     } catch (err) {
       setAuthLoading(false)
     }
@@ -30,7 +32,7 @@ const Authenticate = () => {
           email,
         },
         {
-          redirectTo: window.location.origin,
+          redirectTo: typeof window !== "undefined" ? window.location.origin : '',
         }
       )
       console.log(user)
@@ -39,16 +41,15 @@ const Authenticate = () => {
       setAuthLoading(false)
     }
   }
-
   return (
-    <>
-      <Login
+    <Fragment>
+      <LoginForm
         loading={authLoading}
-        signInWithOneTimeLink={signInWithOneTimeLink}
         signInWithDiscord={signInWithDiscord}
+        signInWithOneTimeLink={signInWithOneTimeLink} 
       />
-    </>
+    </Fragment>
   )
 }
 
-export default Authenticate
+export default Login

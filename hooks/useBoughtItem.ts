@@ -1,5 +1,5 @@
 import { useMutation } from 'react-query'
-import { queryClient } from '..'
+import { queryClient } from '../pages/_app'
 import { supabase } from '../client'
 import { Item } from '../types'
 import { useProfile } from './useProfile'
@@ -25,8 +25,8 @@ export const useBoughtItem = () => {
       return data as Item[]
     },
     {
-      onSuccess: (res) => {
-        queryClient.invalidateQueries(['Items', res?.[0]?.list_id])
+      onSuccess: async (res) => {
+        await queryClient.invalidateQueries(['Items', res?.[0]?.list_id])
       },
     }
   )

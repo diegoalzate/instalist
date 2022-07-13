@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
     }
   }, [])
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     refreshState()
     return () => { }
   }, [refreshState])

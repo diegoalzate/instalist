@@ -10,13 +10,13 @@ import {
 } from '@chakra-ui/react'
 import { DotsVerticalIcon } from '@heroicons/react/outline'
 import { useEffect, useState } from 'react'
-import { Sidebar } from '../components/shared/Sidebar'
-import WishForm from '../components/shared/WishForm'
-import WishList from '../components/shared/WishList'
-import { useDeleteList } from '../hooks'
-import { useAddItem } from '../hooks/useAddItem'
-import { useLists } from '../hooks/useLists'
-import { List as ListType } from '../types'
+import { Sidebar } from '../../components/shared/Sidebar'
+import WishForm from '../../components/shared/WishForm'
+import WishList from '../../components/shared/WishList'
+import { useDeleteList } from '../../hooks'
+import { useAddItem } from '../../hooks/useAddItem'
+import { useLists } from '../../hooks/useLists'
+import { List as ListType } from '../../types'
 
 export interface IWish {
   id?: string
@@ -32,7 +32,7 @@ const List = () => {
   const { mutate: deletelist } = useDeleteList()
   const [showShare, setShowShare] = useState(false)
   const { hasCopied, onCopy } = useClipboard(
-    `${window.location.origin}/list/${selectedList?.id}`
+    `${typeof window !== "undefined" ? window.location.origin : ''}/list/${selectedList?.id}`
   )
 
   useEffect(() => {
@@ -124,7 +124,7 @@ const List = () => {
                 {showShare ? (
                   <Flex mb={2}>
                     <Input
-                      value={`${window.location.origin}/list/${selectedList?.id}`}
+                      value={`${typeof window !== "undefined" ? window.location.origin : ''}/list/${selectedList?.id}`}
                       isReadOnly
                     />
                     <Button onClick={() => {onCopy()}} ml={2}>

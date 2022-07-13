@@ -4,12 +4,13 @@ import {
   DeviceMobileIcon,
   EyeOffIcon,
 } from '@heroicons/react/outline'
-import { Link, useHistory } from 'react-router-dom'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 import { useProfile } from '../hooks'
 import { useAuth } from '../context/AuthContext'
 import { useEffect } from 'react'
 const Home = () => {
-  const history = useHistory()
+  const history = useRouter()
   const { isAuthenticated } = useAuth()
 
   useEffect(() => {
@@ -32,18 +33,17 @@ const Home = () => {
           <p>
             "It's a wishlist for instagram, it's not rocket science." - dev team
           </p>
-          <Link
-            to={'/list'}
-            className="font-WorkSans bg-red-400 hover:bg-blue-300 text-gray-100 text-lg font-semibold rounded-lg py-2 px-6 mx-auto"
-          >
-            <button>Start your list for free!</button>
+          <Link href={'/list'}>
+            <button className="font-WorkSans bg-red-400 hover:bg-blue-300 text-gray-100 text-lg font-semibold rounded-lg py-2 px-6 mx-auto">
+              Start your list for free!
+            </button>
           </Link>
         </div>
-        <img
-          className="my-10 sm:my-auto mx-auto w-3/5 sm:m-0 sm:w-4/5"
-          src={todoIllustration}
-          alt="todo list"
-        />
+        <div className="my-10 sm:my-auto mx-auto w-3/5 sm:m-0 sm:w-4/5"
+          >
+          {todoIllustration}
+        </div>
+       
       </section>
       <section
         id="features"
@@ -85,7 +85,7 @@ const Feature = ({ featureTitle, featureIcon }: IFeatureProps) => {
 const AlertProfile = () => {
   const { data } = useProfile()
   return !data?.email ? (
-    <Link to={'/profile'}>
+    <Link href={'/profile'}>
       <div className="bg-blue-300 space-x-4 text-gray-50 flex justify-center items-center   w-screen absolute top-10 text-center h-12 rounded-b-md ">
         <svg
           xmlns="http://www.w3.org/2000/svg"

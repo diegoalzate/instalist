@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { supabase } from '../client'
-import WishList from '../components/shared/WishList'
-import { useListFromId, useProfile } from '../hooks'
-import { List as ListType } from '../types'
-
+import { supabase } from '../../client'
+import WishList from '../../components/shared/WishList'
+import { useListFromId, useProfile } from '../../hooks'
+import { List as ListType } from '../../types'
+import { useRouter } from 'next/router'
 export interface IWish {
   id?: string
   wish?: string
@@ -17,8 +16,9 @@ type GuestParams =  {
 
 const Guest = () => {
   const { data: profile } = useProfile()
-  const params: GuestParams = useParams()
-  const { data } = useListFromId(params.id)
+  const router = useRouter()
+  const {id} = router.query
+  const { data } = useListFromId(id as string)
   const [selectedList, setSelectedList] = useState<ListType | undefined>()
   
   useEffect(() => {

@@ -1,6 +1,7 @@
 import { useMutation } from 'react-query'
-import { queryClient } from '..'
+import { queryClient } from '../pages/_app'
 import { supabase } from '../client'
+import { async } from 'validate.js'
 type RemoveListType = {
   id?: string
 }
@@ -11,8 +12,8 @@ export const useDeleteList = () => {
       await supabase.from('lists').delete().match({ id: list.id })
     },
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries('Lists')
+      onSuccess: async () => {
+        await queryClient.invalidateQueries('Lists')
       },
     }
   )

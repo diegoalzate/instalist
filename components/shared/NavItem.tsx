@@ -21,7 +21,7 @@ export const NavItem = ({id, navSize, value, active, emoji, onClick}: NavItemPro
       )
     } else {
       return (
-        <Text ml={0}>{emoji}</Text>
+        <Text textAlign={'center'}>{emoji}</Text>
       )
     }
   }
@@ -36,7 +36,7 @@ export const NavItem = ({id, navSize, value, active, emoji, onClick}: NavItemPro
     } else {
       return (
         <Flex >
-          <Text noOfLines={1} textOverflow={'ellipsis'} overflow={'hidden'} ml={0}>{value.slice(0,2)}...</Text>
+          <Text textAlign={'center'} noOfLines={1} textOverflow={'ellipsis'} overflow={'hidden'} ml={0}>{value.slice(0,2)}...</Text>
         </Flex>
       )
     }
@@ -54,17 +54,15 @@ export const NavItem = ({id, navSize, value, active, emoji, onClick}: NavItemPro
       onClick={() => {onClick(id)}}
     >
       <Menu  placement="right">
-        <Link
-          backgroundColor={active ? "whatsapp.100" : '' }
-          p={3}
-          borderRadius={8}
-          _hover={{ textDecor: '', backgroundColor: '--chakra-colors-primary'}}
-          w={active ? '100%' : 'none'}
-        >
-          <MenuButton>
+          <MenuButton
+           backgroundColor={active ? "whatsapp.100" : '' }
+           p={3}
+           borderRadius={8}
+           _hover={{ textDecor: '', backgroundColor: '--chakra-colors-primary'}}
+           w={active ? '100%' : 'none'}
+           >
             {renderContent()}
           </MenuButton>
-        </Link>
       </Menu>
     </Flex>
   )
