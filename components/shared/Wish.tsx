@@ -1,13 +1,10 @@
 import { Skeleton } from '@chakra-ui/react'
+import { LinkPreview } from '@dhaiwat10/react-link-preview'
 import { CheckCircleIcon, XIcon } from '@heroicons/react/outline'
 import { useEffect, useState } from 'react'
-import { queryClient } from '../../pages/_app'
-import { supabase } from '../../client'
-import { useProfile } from '../../hooks'
 import { useBoughtItem } from '../../hooks/useBoughtItem'
 import { useDeleteItem } from '../../hooks/useDeleteItem'
 import { Item } from '../../types'
-import { LinkPreview } from '@dhaiwat10/react-link-preview'
 
 const INSTAGRAM_HOSTNAME = "www.instagram.com";
 
