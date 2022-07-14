@@ -6,6 +6,9 @@ import { supabase } from '../client';
 import { IUser } from '../utils/types';
 import { useAuth } from '../context/AuthContext';
 import Image from 'next/image';
+import { queryClient } from '@/pages/_app';
+import { useRouter } from 'next/router';
+import { useProfile } from '@/hooks';
 
 // eslint-disable-next-line 
 validate.validators.email.PATTERN = /^[a-z0-9\u007F-\uffff!#$%&'*+\/=?^_{|}~-]+(?:.[a-z0-9\u007F-\uffff!#$%&'*+/=?^_{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,}$|^$/i;
@@ -44,7 +47,7 @@ interface IFormState {
 const schema = {
   name: {
     presence: {
-      allowEmpty: true,
+      allowEmpty: false,
     },
     length: {
       maximum: 100,
@@ -77,15 +80,18 @@ const schema = {
 
 const Account = () => {
   const { session } = useAuth()
+  const {data: user} = useProfile();
   const [loading, setLoading] = useState(false)
   const [sex, setSex] = useState<String>('')
-  const [user, setUser] = useState<IUser>()
+  const history = useRouter()
+  const { isAuthenticated } = useAuth()
   const [formState, setFormState] = useState<IFormState>({
     isValid: false,
     values: {
       name: '',
       age: 0,
       sex: '',
+      email:''
     },
     touched: { 
       name: false,
@@ -95,60 +101,35 @@ const Account = () => {
     },
     errors: {}
   })
-
   useEffect(() => {
-    if (user?.email) {
+    if (!isAuthenticated) {
+      history.push('/login')
+    }
+  }, [history, isAuthenticated])
+  useEffect(() => {
+    if (user) {
+      console.log("here", formState, user)
       setFormState((formState) => ({
         ...formState,
         values: {
-          phone: user?.phone ? `+${user.phone}` : '',
+          email: user?.email,
           name: user?.name ?? '',
-          age: parseInt(user?.age ?? '0'),
+          age: +(user?.age ?? 0),
           sex: user?.sex ?? '',
         }
       }))
-    } else {
-      setFormState((formState) => ({
-        ...formState,
-        values: {
-          ...formState.values,
-          name: user?.name ?? '',
-          age: parseInt(user?.age ?? '0'),
-          sex: user?.sex ?? '',
-        }
-      }))
+      console.log("here2", formState, user)
     }
     setSex(user?.sex ?? '')
   }, [user])
-
-  useEffect(() => {
-    const getUserInfo = async () => {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select()
-        .eq('id', session?.user?.id)
-
-      if (error) {
-        console.log(error)
-        return
-      } else {
-        const userData = data?.[0]
-        if (userData) {
-          setUser(userData)
-        }
-      }
-    }
-    getUserInfo()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
   
   useEffect(() => {
     const errors = validate(formState.values, schema)
-    setFormState({
+    setFormState((formState) => ({
       ...formState,
       isValid: !errors,
       errors
-    })
+    }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formState.values])
 
@@ -201,8 +182,7 @@ const Account = () => {
         .update(formValues)
         .eq('id', session?.user?.id)
       if (data) {
-        console.log(data)
-        console.log('Data updated')
+        await queryClient.invalidateQueries("Profile");
       } else {
         console.log(error)
       }
@@ -214,9 +194,6 @@ const Account = () => {
     <div className="min-h-screen flex py-10 items-center justify-center">
       <div className="border-gray-200 border-2 p-8 shadow-2x1 bg-white w-1/2 nt-10 rounded-lg">
         <div className="flex items-center pt-10 flex-col">
-          <div className='-z-10'>
-            <Image src={Avatar} alt="avatar" className="rounded-full border-solid border-red-400 border-4 scale-75"/>
-          </div>
           <h2 className="text-xl font-bold mb-10 text-red-400">
             My Profile
           </h2>
@@ -311,7 +288,6 @@ const Account = () => {
                 {loading ? <CgSpinner size={20} className='a-spinner' /> : "Save"}
             </button>
           </div>
-
         </form>
       </div>
     </div>
