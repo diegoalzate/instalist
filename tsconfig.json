@@ -18,9 +18,24 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "preserve",
+    "incremental": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["*"]
+    }
   },
   "include": [
-    "src"
+    "./components",
+    "./pages",
+    "./containers",
+    "./context",
+    "./hooks",
+    "./types",
+    "./utils",
+    "./custom.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }
