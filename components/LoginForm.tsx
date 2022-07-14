@@ -54,7 +54,7 @@ const LoginForm = ({
                   {loading ? (
                     <CgSpinner size={20} className="a-spinner mx-auto" />
                   ) : (
-                    'Login with magick link'
+                    'Login with magic link'
                   )}
                 </Button>
               </Center>

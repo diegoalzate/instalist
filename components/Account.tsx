@@ -47,7 +47,7 @@ interface IFormState {
 const schema = {
   name: {
     presence: {
-      allowEmpty: true,
+      allowEmpty: false,
     },
     length: {
       maximum: 100,
@@ -91,6 +91,7 @@ const Account = () => {
       name: '',
       age: 0,
       sex: '',
+      email:''
     },
     touched: { 
       name: false,
@@ -104,10 +105,10 @@ const Account = () => {
     if (!isAuthenticated) {
       history.push('/login')
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated])
+  }, [history, isAuthenticated])
   useEffect(() => {
-    if (user?.email) {
+    if (user) {
+      console.log("here", formState, user)
       setFormState((formState) => ({
         ...formState,
         values: {
@@ -117,17 +118,18 @@ const Account = () => {
           sex: user?.sex ?? '',
         }
       }))
+      console.log("here2", formState, user)
     }
     setSex(user?.sex ?? '')
   }, [user])
   
   useEffect(() => {
     const errors = validate(formState.values, schema)
-    setFormState({
+    setFormState((formState) => ({
       ...formState,
       isValid: !errors,
       errors
-    })
+    }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formState.values])
 
@@ -192,9 +194,6 @@ const Account = () => {
     <div className="min-h-screen flex py-10 items-center justify-center">
       <div className="border-gray-200 border-2 p-8 shadow-2x1 bg-white w-1/2 nt-10 rounded-lg">
         <div className="flex items-center pt-10 flex-col">
-          <div className='-z-10'>
-            <Image src={Avatar} alt="avatar" className="rounded-full border-solid border-red-400 border-4 scale-75"/>
-          </div>
           <h2 className="text-xl font-bold mb-10 text-red-400">
             My Profile
           </h2>

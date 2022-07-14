@@ -3,7 +3,6 @@ import {
   Button,
   Flex,
   Input,
-  Link,
   Menu,
   MenuButton,
   MenuItem,
@@ -11,6 +10,7 @@ import {
   useClipboard,
 } from '@chakra-ui/react'
 import { DotsVerticalIcon } from '@heroicons/react/outline'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { Sidebar } from '../../components/shared/Sidebar'
