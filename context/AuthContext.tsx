@@ -1,3 +1,4 @@
+import { queryClient } from "@/pages/_app";
 import { Session, User } from "@supabase/supabase-js";
 import React, { useCallback, useContext, useEffect, useLayoutEffect, useState } from "react";
 import { supabase } from "../client";
@@ -78,6 +79,10 @@ export const AuthProvider = ({ children }: AuthProviderOptions) => {
   const signOut = async () => {
     setLoading(true)
     const { error } = await supabase.auth.signOut()
+    await queryClient.invalidateQueries("Profile");
+    setUser(null);
+    setSession(null);
+    setIsAuthenticated(false);
     setLoading(false)
     if (error) return 
   }

@@ -28,39 +28,37 @@ const LoginForm = ({
   }, [isAuthenticated])
 
   return (
-    <div>
-      <div className="container m-auto min-h-screen flex items-center justify-center">
-        <div className="border-gray-200 border-2 bg-white p-8 rounded shadow-2x1 ">
-          <h2 className="text-xl font-bold mb-10 text-red-400">Login</h2>
-          <VStack mb={4} width={'full'}>
+    <div className="mx-auto min-h-screen flex items-center justify-center">
+      <div className="border-gray-200 border-2 bg-white p-8 rounded-xl h-96 shadow-2xl ">
+        <h2 className="text-xl font-bold mb-10 text-center text-red-400">Login</h2>
+        <VStack mb={4} width={'full'}>
+          <Center>
+            <Button minW={'sm'} colorScheme="purple" backgroundColor={'#7289da'} onClick={signInWithDiscord}>
+            Sign in with Discord
+            </Button>
+          </Center>
+        </VStack>
+        <Divider />
+        <VStack mt={4} spacing={'10'} width={'full'}>
+            <FormControl isRequired>
+              <Input 
+                placeholder='email' 
+                type={'email'} 
+                name='email' 
+                value={email} 
+                onChange={(value: React.ChangeEvent<HTMLInputElement>) => {setEmail(value.target.value)}}/>
+              <FormHelperText>We'll never share your email.</FormHelperText>
+            </FormControl>
             <Center>
-              <Button colorScheme="purple" backgroundColor={'#5865F2'} onClick={signInWithDiscord}>
-                Sign in with Discord
-              </Button>
-            </Center>
-          </VStack>
-          <Divider />
-          <VStack mt={4} spacing={'4'} width={'full'}>
-              <FormControl isRequired>
-                <Input 
-                  placeholder='email' 
-                  type={'email'} 
-                  name='email' 
-                  value={email} 
-                  onChange={(value: React.ChangeEvent<HTMLInputElement>) => {setEmail(value.target.value)}}/>
-                <FormHelperText>We'll never share your email.</FormHelperText>
-              </FormControl>
-              <Center>
-                  <Button colorScheme="pink" onClick={() => {signInWithOneTimeLink(email)}}>
-                    {loading ? (
-                      <CgSpinner size={20} className="a-spinner mx-auto" />
-                    ) : (
-                      'Login with magick link'
-                    )}
-                  </Button>
-                </Center>
-          </VStack>
-        </div>
+                <Button minW={'sm'} colorScheme="pink" onClick={() => {signInWithOneTimeLink(email)}}>
+                  {loading ? (
+                    <CgSpinner size={20} className="a-spinner mx-auto" />
+                  ) : (
+                    'Login with magick link'
+                  )}
+                </Button>
+              </Center>
+        </VStack>
       </div>
     </div>
   )

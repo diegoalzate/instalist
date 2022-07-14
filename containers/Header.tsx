@@ -12,7 +12,7 @@ import { useProfile } from '../hooks'
 import Link from 'next/link'
 const Header = () => {
   return (
-    <header className="sticky flex top-0 bg-red-400 text-gray-100 font-semibold text-center px-6 align-middle justify-between border-gray-200 border-b-2 z-50">
+    <header className="sticky flex top-0 bg-red-400 text-gray-100 font-semibold text-center px-6 align-middle justify-between border-gray-200 z-50">
       <Link href="/">
         <h1 className='self-center'>Instalist</h1>
       </Link>

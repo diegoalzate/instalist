@@ -15,6 +15,7 @@ const Picker = (props: any) => {
     import('emoji-mart').then((EmojiMart) => {
       new EmojiMart.Picker({ ...props, data, ref } as any)
     })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return <div ref={ref}/>

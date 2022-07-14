@@ -1,7 +1,9 @@
+import { useAuth } from '@/context/AuthContext'
 import {
   Button,
   Flex,
   Input,
+  Link,
   Menu,
   MenuButton,
   MenuItem,
@@ -9,11 +11,12 @@ import {
   useClipboard,
 } from '@chakra-ui/react'
 import { DotsVerticalIcon } from '@heroicons/react/outline'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { Sidebar } from '../../components/shared/Sidebar'
 import WishForm from '../../components/shared/WishForm'
 import WishList from '../../components/shared/WishList'
-import { useDeleteList } from '../../hooks'
+import { useDeleteList, useProfile } from '../../hooks'
 import { useAddItem } from '../../hooks/useAddItem'
 import { useLists } from '../../hooks/useLists'
 import { List as ListType } from '../../types'
@@ -31,9 +34,18 @@ const List = () => {
   const [selectedList, setSelectedList] = useState<ListType | undefined>()
   const { mutate: deletelist } = useDeleteList()
   const [showShare, setShowShare] = useState(false)
+  const { isAuthenticated } = useAuth()
+  const history = useRouter()
   const { hasCopied, onCopy } = useClipboard(
     `${typeof window !== "undefined" ? window.location.origin : ''}/list/${selectedList?.id}`
   )
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      history.push('/login')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated])
 
   useEffect(() => {
     if (!selectedList || !data?.find((list) => list.id === selectedList.id)) {
@@ -80,6 +92,7 @@ const List = () => {
 
   return (
     <div className="flex items-start space-x-8 w-full">
+    <AlertProfile />
       <Sidebar
         lists={data}
         handleSelectedList={handleSelectedList}
@@ -155,4 +168,42 @@ const List = () => {
   )
 }
 
+const AlertProfile = () => {
+  const { data } = useProfile()
+  return !data?.email ? (
+    <Link href={'/profile'}>
+      <div className="bg-blue-300 space-x-4 text-gray-50 flex justify-center items-center w-screen absolute top-10 text-center h-12 rounded-b-md ">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+          />
+        </svg>
+        <p className="font-bold">Finish up your profile</p>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M17 8l4 4m0 0l-4 4m4-4H3"
+          />
+        </svg>
+      </div>
+    </Link>
+  ) : null
+}
 export default List
