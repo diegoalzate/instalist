@@ -1,7 +1,6 @@
 import { useMutation } from 'react-query'
 import { queryClient } from '../pages/_app'
 import { supabase } from '../client'
-import { async } from 'validate.js'
 type RemoveListType = {
   id?: string
 }
