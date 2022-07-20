@@ -1,30 +1,24 @@
 /* eslint-disable react/no-unescaped-entities */
-import todoIllustration from '../public/images/undraw_chore_list_re_2lq8.svg'
-import {
-  ShareIcon,
-  DeviceMobileIcon,
-  EyeOffIcon,
-  CheckCircleIcon,
-  BellIcon,
-  XCircleIcon,
-} from '@heroicons/react/outline'
-import { useRouter } from 'next/router'
-import Link from 'next/link'
-import { useProfile } from '../hooks'
-import { useAuth } from '../context/AuthContext'
-import { useEffect } from 'react'
 import { List, ListIcon, ListItem } from '@chakra-ui/react'
+import {
+  BellIcon, DeviceMobileIcon,
+  EyeOffIcon, ShareIcon, XCircleIcon
+} from '@heroicons/react/outline'
+import { useUser } from '@supabase/auth-helpers-react'
 import { motion } from 'framer-motion'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 const Home = () => {
   const history = useRouter()
-  const { isAuthenticated } = useAuth()
+  const { user } = useUser()
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (user) {
       history.push('/list')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated])
+  }, [user])
   return (
     <div className="pt-10">
       <section
@@ -36,7 +30,7 @@ const Home = () => {
             Keep track of everything you want on Instagram
           </h2>
           <p>"It's a wishlist, it's not rocket science." - dev team</p>
-          <Link href={'/list'}>
+          <Link href={'/login'}>
             <button className="font-WorkSans bg-red-400 hover:bg-blue-300 text-gray-100 text-lg font-semibold rounded-lg py-2 px-6 mx-auto">
               Start your list for free!
             </button>

@@ -1,4 +1,4 @@
-import { useAuth } from '@/context/AuthContext'
+import { supabase } from '@/client'
 import {
   Button,
   Flex,
@@ -10,6 +10,7 @@ import {
   useClipboard,
 } from '@chakra-ui/react'
 import { DotsVerticalIcon } from '@heroicons/react/outline'
+import { GetServerSideProps } from 'next'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -34,19 +35,10 @@ const List = () => {
   const [selectedList, setSelectedList] = useState<ListType | undefined>()
   const { mutate: deletelist } = useDeleteList()
   const [showShare, setShowShare] = useState(false)
-  const { isAuthenticated } = useAuth()
   const history = useRouter()
   const { hasCopied, onCopy } = useClipboard(
     `${typeof window !== "undefined" ? window.location.origin : ''}/list/${selectedList?.id}`
   )
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      history.push('/login')
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated])
-
   useEffect(() => {
     if (!selectedList || !data?.find((list) => list.id === selectedList.id)) {
       setSelectedList(data?.[0])
@@ -170,7 +162,7 @@ const List = () => {
 
 const AlertProfile = () => {
   const { data } = useProfile()
-  return !data?.email ? (
+  return !data?.name ? (
     <Link href={'/profile'}>
       <div className="bg-blue-300 space-x-4 text-gray-50 flex justify-center items-center w-screen absolute top-10 text-center h-12 rounded-b-md ">
         <svg
@@ -207,3 +199,14 @@ const AlertProfile = () => {
   ) : null
 }
 export default List
+
+export const getServerSideProps: GetServerSideProps = async ({ req })  =>{
+  const { user, data } = await supabase.auth.api.getUserByCookie(req)
+  if (!user) {
+    // If no user, redirect to index.
+    return { props: {}, redirect: { destination: '/', permanent: false } }
+  }
+
+  // If there is a user, return it.
+  return { props: { user } }
+}

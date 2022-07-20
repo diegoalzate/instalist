@@ -1,25 +1,20 @@
 import { useQuery } from 'react-query'
 import { supabase } from '../client'
-import { useAuth } from '../context/AuthContext'
+import { useUser } from '@supabase/auth-helpers-react';
 import { Profile } from '../types'
 
 export const useProfile = () => {
-  const { session } = useAuth()
-
+  const {user} = useUser();
   return useQuery(
-    'Profile',
+    ['Profile', user?.email],
     async () => {
+      if (!user) return null
       const { data, error } = await supabase
         .from('profiles')
         .select()
-        .eq('id', session?.user?.id)
-
-      if (error) return
-
+        .eq('id', user?.id)
+      if (error) return null
       return data?.[0] as Profile
-    },
-    {
-      enabled: !!session?.user?.id,
     }
   )
 

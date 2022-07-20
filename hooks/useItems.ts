@@ -1,6 +1,5 @@
 import { useQuery } from "react-query"
 import { supabase } from "../client"
-import { useAuth } from "../context/AuthContext"
 import { List, Item } from "../types"
 
 type useItemProps = {

@@ -1,12 +1,11 @@
-import { Button, Input } from '@chakra-ui/react'
-import { useEffect, useRef, useState } from 'react'
-import { supabase } from '../client'
-import dynamic from 'next/dynamic';
-import { useProfile } from '../hooks'
-import { useRouter } from 'next/router'
-import { useAuth } from '../context/AuthContext'
-import data from '@emoji-mart/data'
-import { EmojiData, EmojiProps } from 'emoji-mart';
+import { Button, Input } from '@chakra-ui/react';
+import data from '@emoji-mart/data';
+import { useRouter } from 'next/router';
+import { useEffect, useRef, useState } from 'react';
+import { supabase } from '@/client';
+import { useProfile } from '@/hooks';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { GetServerSideProps } from 'next';
 
 const Picker = (props: any) => {
   const ref: any = useRef()
@@ -28,15 +27,6 @@ const CreateList = () => {
     emoji: '⭐️',
   })
   const [showPicker, setShowPicker] = useState(false)
-  const { isAuthenticated } = useAuth()
-  const router = useRouter()
-  
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push('/')
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated])
   
   const createList = async () => {
     const { data } = await supabase.from('lists').insert({
@@ -123,3 +113,15 @@ const CreateList = () => {
 }
 
 export default CreateList
+
+export const getServerSideProps: GetServerSideProps = async ({ req })  =>{
+  const { user } = await supabase.auth.api.getUserByCookie(req)
+
+  if (!user) {
+    // If no user, redirect to index.
+    return { props: {}, redirect: { destination: '/', permanent: false } }
+  }
+
+  // If there is a user, return it.
+  return { props: { user } }
+}

@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { useAuth } from '../context/AuthContext'
+import { useUser } from '@supabase/auth-helpers-react'
 // UI
 import { Button, Center, Divider, FormControl, FormHelperText, Input, VStack } from '@chakra-ui/react'
 import { CgSpinner } from 'react-icons/cg'
@@ -17,15 +17,15 @@ const LoginForm = ({
   loading
 }: IState) => {
   const history = useRouter()
-  const { isAuthenticated } = useAuth()
+  const { user } = useUser()
   const [email, setEmail] = useState('')
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (user) {
       history.push('/list')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated])
+  }, [user])
 
   return (
     <div className="mx-auto min-h-screen flex items-center justify-center">
