@@ -1,10 +1,10 @@
 import { useQuery } from 'react-query'
 import { supabase } from '../client'
-import { useAuth } from '../context/AuthContext'
+import { useUser } from '@supabase/auth-helpers-react';
 import { List } from '../types'
 
 export const useLists = () => {
-  const { session } = useAuth()
+  const { user } = useUser()
 
   return useQuery(
     'Lists',
@@ -12,14 +12,14 @@ export const useLists = () => {
       const { data, error } = await supabase
         .from('lists')
         .select()
-        .eq('profile_id', session?.user?.id)
+        .eq('profile_id', user?.id)
 
       if (error) return
 
       return data as List[]
     },
     {
-      enabled: !!session?.user?.id,
+      enabled: !!user?.id,
     }
   )
 }

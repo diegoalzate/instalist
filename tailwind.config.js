@@ -1,4 +1,9 @@
 const colors = require('tailwindcss/colors')
+delete colors['lightBlue'];
+delete colors['warmGray'];
+delete colors['trueGray'];
+delete colors['coolGray'];
+delete colors['blueGray'];
 module.exports = {
    content: ['./pages/**/*.{js,jsx,ts,tsx}', './public/index.html', "./components/**/*.{js,ts,jsx,tsx}", "./containers/**/*.{js,ts,jsx,tsx}"],
     theme: {

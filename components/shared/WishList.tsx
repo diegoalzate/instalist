@@ -1,7 +1,7 @@
 import { Center, Flex, Skeleton } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
-import { useItems, useProfile } from '../../hooks'
-import { List } from '../../types'
+import { useItems, useProfile } from '@/hooks'
+import { List } from '@/types'
 import Wish from './Wish'
 
 type WishListProps = {

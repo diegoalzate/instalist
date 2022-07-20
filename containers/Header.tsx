@@ -7,14 +7,17 @@ import {
   MenuList,
 } from '@chakra-ui/react'
 import { ChevronDownIcon, UserIcon, XIcon } from '@heroicons/react/outline'
-import { useAuth } from '../context/AuthContext'
+import { useUser } from '@supabase/auth-helpers-react';
 import { useProfile } from '../hooks'
 import Link from 'next/link'
+import { supabase } from '@/client';
+import { useRouter } from 'next/router'
+
 const Header = () => {
   return (
     <header className="sticky flex top-0 bg-red-400 text-gray-100 font-semibold text-center px-6 align-middle justify-between border-gray-200 z-50">
       <Link href="/">
-        <h1 className='self-center'>Instalist</h1>
+        <h1 className='self-center cursor-pointer'>Instalist</h1>
       </Link>
       <AuthDropdown />
     </header>
@@ -22,13 +25,13 @@ const Header = () => {
 }
 
 const AuthDropdown = () => {
-  const { signOut } = useAuth()
+  const history = useRouter()
   const { data } = useProfile()
-
+  const {accessToken, user} = useUser()
   return (
     <Menu>
       {({ isOpen }) =>
-        data ? (
+        (data && accessToken) ? (
           <>
             <MenuButton
               alignSelf={'center'}
@@ -66,7 +69,10 @@ const AuthDropdown = () => {
               </Link>
               <MenuDivider />
               <MenuItem
-                onClick={signOut}
+                onClick={async () => {
+                  await supabase.auth.signOut()
+                  history.push('/')
+                }}
                 _focus={{
                   textColor: 'blue.400',
                 }}

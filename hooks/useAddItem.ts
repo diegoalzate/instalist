@@ -1,7 +1,8 @@
 import { useMutation } from 'react-query'
 import { queryClient } from '../pages/_app'
 import { supabase } from '../client'
-import { useAuth } from '../context/AuthContext'
+import { useUser } from '@supabase/auth-helpers-react';
+
 import { Item } from '../types'
 type AddItemType = {
   name: string
@@ -10,7 +11,7 @@ type AddItemType = {
 }
 
 export const useAddItem = () => {
-  const { session } = useAuth()
+  const { user } = useUser()
 
   return useMutation(
     async (newItem: AddItemType) => {
@@ -18,7 +19,7 @@ export const useAddItem = () => {
         name: newItem.name,
         url: newItem.url,
         list_id: newItem.listId,
-        profile_id: session?.user?.id,
+        profile_id: user?.id,
       } as Item)
       return res.body?.[0] as Item
     },
