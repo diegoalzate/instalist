@@ -3,7 +3,7 @@ import { MenuIcon, PlusIcon } from '@heroicons/react/outline'
 import { useState } from 'react'
 import { CgSpinner } from 'react-icons/cg'
 import { useRouter } from 'next/router'
-import { useLists } from '../../hooks/useLists'
+import { useLists } from '../../hooks/list/useLists'
 import { List } from '../../types'
 import { NavItem } from './NavItem'
 

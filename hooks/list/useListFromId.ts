@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query'
-import { supabase } from '../client'
-import { List } from '../types'
+import { supabase } from '../../client'
+import { List } from '../../types'
 
 export const useListFromId = (id: string) => {
   return useQuery(

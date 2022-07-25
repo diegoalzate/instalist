@@ -56,7 +56,7 @@ const Home = () => {
           />
         </div>
       </section>
-      <section id="roadmap" className="p-4 flex-col w-1/3 mx-auto sm:pt-8">
+      <section id="roadmap" className="p-4 flex-col sm:w-1/3 w-1/2 mx-auto sm:pt-8">
         <h2 className="underline decoration-wavy decoration-blue-400 text-2xl font-WorkSans text-center text-red-400 font-bold">
           Roadmap
         </h2>
@@ -99,8 +99,8 @@ const Feature = ({ featureTitle, featureIcon }: IFeatureProps) => {
       drag
       dragConstraints={{
         top: -10,
-        left: -20,
-        right: 20,
+        left: -10,
+        right: 10,
         bottom: 10,
       }}
       whileHover={{ scale: 1.1 }}

@@ -1,6 +1,6 @@
 import { useQuery } from "react-query"
-import { supabase } from "../client"
-import { List, Item } from "../types"
+import { supabase } from "../../client"
+import { List, Item } from "../../types"
 
 type useItemProps = {
     selectedList?:  List

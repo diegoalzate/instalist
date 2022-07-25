@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query'
-import { supabase } from '../client'
+import { supabase } from '../../client'
 import { useUser } from '@supabase/auth-helpers-react';
-import { List } from '../types'
+import { List } from '../../types'
 
 export const useLists = () => {
   const { user } = useUser()
