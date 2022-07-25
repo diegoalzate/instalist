@@ -19,7 +19,7 @@ const Guest = () => {
   const [selectedList, setSelectedList] = useState<ListType | undefined>()
   
   useEffect(() => {
-    if (data && !selectedList) {
+    if (data && !selectedList && !data?.[0].locked) {
       setSelectedList(data?.[0])
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -27,7 +27,7 @@ const Guest = () => {
 
   useEffect(() => {
     if(selectedList) {
-      if (selectedList.profile_id !== profile?.id) {
+      if (selectedList.profile_id !== profile?.id && !selectedList.locked) {
         addViewIfNotOwner()
       }
     }
