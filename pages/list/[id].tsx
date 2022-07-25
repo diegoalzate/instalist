@@ -10,9 +10,6 @@ export interface IWish {
   url?: string
 }
 
-type GuestParams =  {
-    id: string;
-}
 
 const Guest = () => {
   const { data: profile } = useProfile()

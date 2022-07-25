@@ -1,9 +1,9 @@
 import { useMutation } from 'react-query'
-import { queryClient } from '../pages/_app'
-import { supabase } from '../client'
+import { queryClient } from '@/pages/_app'
+import { supabase } from '@/client'
 import { useUser } from '@supabase/auth-helpers-react';
 
-import { Item } from '../types'
+import { Item } from '../../types'
 type AddItemType = {
   name: string
   url?: string

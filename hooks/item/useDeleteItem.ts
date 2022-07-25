@@ -1,6 +1,6 @@
 import { useMutation } from 'react-query'
-import { queryClient } from '../pages/_app'
-import { supabase } from '../client'
+import { queryClient } from '../../pages/_app'
+import { supabase } from '../../client'
 type RemoveItemType = {
   id: string
   listId?: string
