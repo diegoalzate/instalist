@@ -32,9 +32,9 @@ const WishForm = ({ value, handleChange, onClick, url }: IWishForm) => {
             aria-label="Add link"
             icon={
               isOpen ? (
-                <XIcon className="max-h-4" />
+                <XIcon width={20} />
               ) : (
-                <LinkIcon className="max-h-4" />
+                <LinkIcon width={20} />
               )
             }
             className="mr-2"
@@ -44,7 +44,7 @@ const WishForm = ({ value, handleChange, onClick, url }: IWishForm) => {
             aria-label="Add wish"
             bgColor={'red.400'}
             textColor={'white'}
-            icon={<CheckIcon className="max-h-4" />}
+            icon={<CheckIcon width={20} />}
             onClick={onClick}
           />
         </div>
