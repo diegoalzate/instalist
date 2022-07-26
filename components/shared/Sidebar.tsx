@@ -68,7 +68,7 @@ export const Sidebar = ({lists, selectedList, handleSelectedList}: SidebarPropsT
         aria-label="Add wish"
         bgColor={'red.400'}
         textColor={'white'}
-        icon={<PlusIcon className="max-h-4" />}
+        icon={<PlusIcon width={20} />}
         onClick={() => {
           history.push('/create-list')
         }}

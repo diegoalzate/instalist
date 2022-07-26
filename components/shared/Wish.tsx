@@ -27,7 +27,8 @@ const Wish = ({ item, owner }: WishProps) => {
     if (owner) {
       return (
         <XIcon
-          className={`max-h-4 self-end hover:text-red-400`}
+          width={20}
+          className={`self-end hover:text-red-400`}
           onClick={() => {
             mutate({ id, listId: list_id })
           }}
@@ -36,7 +37,8 @@ const Wish = ({ item, owner }: WishProps) => {
     } else {
       return (
         <CheckCircleIcon
-          className={`max-h-4 self-end hover:text-red-400 ${
+          width={20}
+          className={`self-end hover:text-red-400 ${
             bought ? 'text-green-400' : ''
           }`}
           onClick={() => {
