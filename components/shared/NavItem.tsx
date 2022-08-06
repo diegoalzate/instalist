@@ -50,7 +50,7 @@ export const NavItem = ({id, navSize, value, active, emoji, onClick}: NavItemPro
     <Flex 
       mt={30}
       w="100%"
-      alignItems={navSize === 'small' ? 'center' : 'start'}
+      alignItems={'center'}
       onClick={() => {onClick(id)}}
     >
       <Menu  placement="right">

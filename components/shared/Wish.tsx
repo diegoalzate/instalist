@@ -88,14 +88,12 @@ const Wish = ({ item, owner }: WishProps) => {
           {name}
         </h1>
       )}
-      <a href={url} target="_blank" rel="noreferrer" className={`text-sm`}>
-        <LinkPreview
-          url={item.url ?? ''}
-          descriptionLength={0}
-          explicitImageSrc={imageSrc}
-          imageHeight={'200px'}
-        />
-      </a>
+      <LinkPreview
+        url={item.url ?? ''}
+        descriptionLength={0}
+        explicitImageSrc={imageSrc}
+        imageHeight={'200px'}
+      />
     </div>
   )
 }
