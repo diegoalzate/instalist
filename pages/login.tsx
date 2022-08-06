@@ -5,18 +5,17 @@ import LoginForm from '../components/LoginForm'
 
 const Login = () => {
   const [authLoading, setAuthLoading] = useState(false)
-
+  const [success, setSuccess] = useState(false);
   const signInWithDiscord = async () => {
     setAuthLoading(true)
     try {
       if (typeof window !== "undefined") {
-        const { user, session, error } = await supabase.auth.signIn(
+        const { user } = await supabase.auth.signIn(
           {
             provider: 'discord',
           },
           { redirectTo: typeof window !== "undefined" ? window.location.origin : '' }
         )
-        console.log(user)
         setAuthLoading(false)
       }
     } catch (err) {
@@ -35,15 +34,17 @@ const Login = () => {
           redirectTo: typeof window !== "undefined" ? window.location.origin : '',
         }
       )
-      console.log(user)
+      setSuccess(true)
       setAuthLoading(false)
     } catch (err) {
       setAuthLoading(false)
+      setSuccess(false)
     }
   }
   return (
     <Fragment>
       <LoginForm
+        success={success}
         loading={authLoading}
         signInWithDiscord={signInWithDiscord}
         signInWithOneTimeLink={signInWithOneTimeLink} 

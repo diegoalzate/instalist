@@ -9,7 +9,7 @@ const WebLayout = ({ children }: IProps) => {
   return (
     <>
       <Header />
-      <div className="pt-12 min-h-screen">{children}</div>
+      <div className="pt-12 min-h-screen overflow-hidden">{children}</div>
       <Footer />
     </>
   )
