@@ -89,14 +89,14 @@ const List = () => {
   }
 
   return (
-    <div className="flex items-start space-x-8 w-full">
+    <div className="flex items-start justify-around space-x-8 w-screen ">
     <AlertProfile />
       <Sidebar
         lists={data}
         handleSelectedList={handleSelectedList}
         selectedList={selectedList}
       />
-      <div className="flex flex-col justify-center grow">
+      <div className="flex flex-col justify-center">
         <div className="self-end mx-4">
           <Menu>
             <MenuButton

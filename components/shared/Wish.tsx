@@ -6,7 +6,7 @@ import { useDeleteItem, useEditItem, useProfile } from '@/hooks'
 import { Item } from '@/types'
 
 const INSTAGRAM_HOSTNAME = 'www.instagram.com'
-
+const RLP_PROXY_URL = 'https://react-link-preview-instalist.herokuapp.com/?url='
 type WishProps = {
   item: Item
   owner: boolean
@@ -79,20 +79,30 @@ const Wish = ({ item, owner }: WishProps) => {
   }
 
   return (
-    <div className="flex flex-col space-y-2 mb-2 rounded border-2 p-2 w-72 sm:w-96">
+    <div className="flex flex-col space-y-2 mb-2 rounded border-2 p-2 w-72">
       {renderIcon()}
       {isLoading ? (
         <Skeleton h={20} />
       ) : (
-        <h1 className={`text-lg text-gray-800 ${bought ? 'line-through' : ''}`}>
+        <h1 className={`text-lg text-gray-800 ${(!owner && bought) ? 'line-through' : ''}`}>
           {name}
         </h1>
       )}
       <LinkPreview
         url={item.url ?? ''}
         descriptionLength={0}
+        fetcher={() => {
+          return fetch(RLP_PROXY_URL+item.url).then(res => res.json().then(({metadata}) => ({
+            title: metadata.meta.title ?? '',
+            description: '',
+            image: metadata.og.image,
+            hostname: '',
+            siteName: metadata.og?.site_name ?? ''
+          })))
+        }}
         explicitImageSrc={imageSrc}
         imageHeight={'200px'}
+        showLoader={false}
       />
     </div>
   )
