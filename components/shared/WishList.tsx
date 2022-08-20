@@ -1,4 +1,4 @@
-import { Center, Flex, Skeleton } from '@chakra-ui/react'
+import { Center, SimpleGrid, Skeleton } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useItems, useProfile } from '@/hooks'
 import { List } from '@/types'
@@ -26,7 +26,7 @@ const WishList = ({ selectedList }: WishListProps) => {
       {isLoading ? (
         <Skeleton height="20px" />
       ) : (
-        <Flex direction={'column-reverse'}>
+        <SimpleGrid columns={[1, 1, 2, 3]} spacingX={['20']} maxW="full">          
           {items?.map((item, i) => (
             <Wish
               key={i}
@@ -34,7 +34,7 @@ const WishList = ({ selectedList }: WishListProps) => {
               owner={owner}
             />
           ))}
-        </Flex>
+        </SimpleGrid>
       )}
     </Center>
   )
