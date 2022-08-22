@@ -7,9 +7,21 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   useClipboard,
+  useDisclosure,
 } from '@chakra-ui/react'
-import { DotsVerticalIcon, LockClosedIcon, LockOpenIcon } from '@heroicons/react/outline'
+import {
+  DotsVerticalIcon,
+  LockClosedIcon,
+  LockOpenIcon,
+} from '@heroicons/react/outline'
 import { GetServerSideProps } from 'next'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -17,7 +29,13 @@ import { CgLock, CgLockUnlock } from 'react-icons/cg'
 import { Sidebar } from '@/components/shared/Sidebar'
 import WishForm from '@/components/shared/WishForm'
 import WishList from '@/components/shared/WishList'
-import { useDeleteList, useEditList, useProfile, useAddItem, useLists } from '@/hooks'
+import {
+  useDeleteList,
+  useEditList,
+  useProfile,
+  useAddItem,
+  useLists,
+} from '@/hooks'
 import { List, List as ListType } from '@/types'
 
 export interface IWish {
@@ -30,12 +48,15 @@ const List = () => {
   const [form, setForm] = useState<IWish>()
   const { data } = useLists()
   const { mutate: saveItem } = useAddItem()
-  const {mutate: editList} = useEditList()
+  const { mutate: editList } = useEditList()
   const [selectedList, setSelectedList] = useState<ListType | undefined>()
   const { mutate: deletelist } = useDeleteList()
   const [showShare, setShowShare] = useState(false)
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const { hasCopied, onCopy } = useClipboard(
-    `${typeof window !== "undefined" ? window.location.origin : ''}/list/${selectedList?.id}`
+    `${typeof window !== 'undefined' ? window.location.origin : ''}/list/${
+      selectedList?.id
+    }`
   )
   useEffect(() => {
     if (!selectedList || !data?.find((list) => list.id === selectedList.id)) {
@@ -80,23 +101,26 @@ const List = () => {
     )
   }
 
-  const toggleLocked =  () => {
-    editList({list: {...selectedList, locked: !selectedList?.locked} as List}, {
-      onSuccess: (res) => {
-        setSelectedList(res?.[0])
+  const toggleLocked = () => {
+    editList(
+      { list: { ...selectedList, locked: !selectedList?.locked } as List },
+      {
+        onSuccess: (res) => {
+          setSelectedList(res?.[0])
+        },
       }
-    })
+    )
   }
 
   return (
-    <div className="flex items-start space-x-8 w-full">
-    <AlertProfile />
+    <div className="flex items-start justify-around lg:justify-between space-x-8 w-screen ">
+      <AlertProfile />
       <Sidebar
         lists={data}
         handleSelectedList={handleSelectedList}
         selectedList={selectedList}
       />
-      <div className="flex flex-col justify-center grow">
+      <div className="flex flex-col flex-grow">
         <div className="self-end mx-4">
           <Menu>
             <MenuButton
@@ -113,21 +137,13 @@ const List = () => {
               <MenuItem
                 rounded={'md'}
                 _focus={{ backgroundColor: 'inherit' }}
-                _hover={{ backgroundColor: 'whatsapp.100' }}
-                onClick={async () => {
-                  deletelist({ id: selectedList?.id })
-                }}
-              >
-                Delete
-              </MenuItem>
-              <MenuItem
-                rounded={'md'}
-                _focus={{ backgroundColor: 'inherit' }}
                 _hover={{ backgroundColor: `${!showShare && 'whatsapp.100'}` }}
                 onClick={async () => {
                   if (!showShare) {
                     setShowShare(true)
-                    setTimeout(() => {setShowShare(false)}, 4000)
+                    setTimeout(() => {
+                      setShowShare(false)
+                    }, 4000)
                   }
                 }}
                 closeOnSelect={false}
@@ -135,10 +151,19 @@ const List = () => {
                 {showShare ? (
                   <Flex mb={2}>
                     <Input
-                      value={`${typeof window !== "undefined" ? window.location.origin : ''}/list/${selectedList?.id}`}
+                      value={`${
+                        typeof window !== 'undefined'
+                          ? window.location.origin
+                          : ''
+                      }/list/${selectedList?.id}`}
                       isReadOnly
                     />
-                    <Button onClick={() => {onCopy()}} ml={2}>
+                    <Button
+                      onClick={() => {
+                        onCopy()
+                      }}
+                      ml={2}
+                    >
                       {hasCopied ? 'Copied' : 'Copy'}
                     </Button>
                   </Flex>
@@ -146,14 +171,22 @@ const List = () => {
                   'Share'
                 )}
               </MenuItem>
+              <MenuItem
+                rounded={'md'}
+                _focus={{ backgroundColor: 'inherit' }}
+                _hover={{ backgroundColor: 'whatsapp.100' }}
+                onClick={onOpen}
+              >
+                Delete
+              </MenuItem>
             </MenuList>
           </Menu>
         </div>
-        <div className='self-center flex space-x-2 items-center'>
+        <div className="self-center flex space-x-2 items-center">
           <h1 className="text-xl">{lastWordWithUnderline()}</h1>
-          <span className='cursor-pointer' onClick={toggleLocked}>{
-            selectedList?.locked ? <CgLock /> : <CgLockUnlock />
-          }</span>
+          <span className="cursor-pointer" onClick={toggleLocked}>
+            {selectedList?.locked ? <CgLock /> : <CgLockUnlock />}
+          </span>
         </div>
         <div className="self-center space-x-3">
           <WishForm
@@ -167,6 +200,25 @@ const List = () => {
           <WishList selectedList={selectedList} />
         </section>
       </div>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalCloseButton />
+          <ModalBody>
+            Are you  sure you want to delete the list?
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme='blue' mr={3} onClick={onClose}>
+              Close
+            </Button>
+            <Button variant='solid' onClick={async () => {
+                  deletelist({ id: selectedList?.id })
+                  onClose()
+                }}>Confirm</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </div>
   )
 }
@@ -215,7 +267,7 @@ const AlertProfile = () => {
 }
 export default List
 
-export const getServerSideProps: GetServerSideProps = async ({ req })  =>{
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const { user, data } = await supabase.auth.api.getUserByCookie(req)
   if (!user) {
     // If no user, redirect to index.

@@ -27,7 +27,7 @@ const Home = () => {
       >
         <div className="flex flex-col gap-6 sm:gap-10 sm:my-10 text-center">
           <h2 className="text-4xl font-bold text-red-400 sm:text-6xl">
-            Keep track of everything you want on Instagram
+            Keep track of everything you want, anywhere
           </h2>
           <p>"It's a wishlist, it's not rocket science." - dev team</p>
           <Link href={'/login'}>
