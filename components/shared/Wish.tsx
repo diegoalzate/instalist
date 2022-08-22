@@ -1,6 +1,11 @@
 import { Skeleton } from '@chakra-ui/react'
 import { LinkPreview } from '@dhaiwat10/react-link-preview'
-import { CheckCircleIcon, XIcon } from '@heroicons/react/outline'
+import {
+  CheckCircleIcon,
+  XIcon,
+  HeartIcon as HeartOutline,
+} from '@heroicons/react/outline'
+import { HeartIcon } from '@heroicons/react/solid'
 import { useEffect, useState } from 'react'
 import { useDeleteItem, useEditItem, useProfile } from '@/hooks'
 import { Item } from '@/types'
@@ -15,7 +20,7 @@ type WishProps = {
 const Wish = ({ item, owner }: WishProps) => {
   const { mutate } = useDeleteItem()
   const { data: profile } = useProfile()
-  const { mutate: boughtItem, isLoading } = useEditItem()
+  const { mutate: editItem, isLoading } = useEditItem()
   const [imageSrc, setImageSrc] = useState<string>()
   const { bought, name, url, id, list_id } = item
   useEffect(() => {
@@ -42,13 +47,51 @@ const Wish = ({ item, owner }: WishProps) => {
             bought ? 'text-green-400' : ''
           }`}
           onClick={() => {
-            boughtItem({
+            editItem({
               item: { ...item, bought: !item.bought, bought_by: profile?.id },
             })
           }}
         />
       )
     }
+  }
+
+  const renderFavorite = () => {
+    if (isLoading) return <Skeleton h={10} />
+    if (owner) {
+      return item.favorite ? (
+        <HeartIcon
+          width={20}
+          className={`self-start hover:text-red-400`}
+          color={`${'bg-red-400'}`}
+          onClick={() => {
+            editItem({
+              item: { ...item, favorite: !item.favorite },
+            })
+          }}
+        />
+      ) : (
+        <HeartOutline
+          width={20}
+          className={`self-start hover:text-red-400`}
+          color={`${'bg-red-400'}`}
+          onClick={() => {
+            editItem({
+              item: { ...item, favorite: !item.favorite },
+            })
+          }}
+        />
+      )
+    }
+  }
+
+  const topCardActions = () => {
+    return (
+      <div className="flex justify-between">
+        {renderFavorite()}
+        {renderIcon()}
+      </div>
+    )
   }
 
   const fetchInstagramImage = async () => {
@@ -80,11 +123,15 @@ const Wish = ({ item, owner }: WishProps) => {
 
   return (
     <div className="flex flex-col space-y-2 mb-2 rounded border-2 p-2 w-72">
-      {renderIcon()}
+      {topCardActions()}
       {isLoading ? (
         <Skeleton h={20} />
       ) : (
-        <h1 className={`text-lg text-gray-800 ${(!owner && bought) ? 'line-through' : ''}`}>
+        <h1
+          className={`text-lg text-gray-800 ${
+            !owner && bought ? 'line-through' : ''
+          }`}
+        >
           {name}
         </h1>
       )}
@@ -92,13 +139,15 @@ const Wish = ({ item, owner }: WishProps) => {
         url={item.url ?? ''}
         descriptionLength={0}
         fetcher={() => {
-          return fetch(RLP_PROXY_URL+item.url).then(res => res.json().then(({metadata}) => ({
-            title: metadata.meta.title ?? '',
-            description: '',
-            image: metadata.og.image,
-            hostname: '',
-            siteName: metadata.og?.site_name ?? ''
-          })))
+          return fetch(RLP_PROXY_URL + item.url).then((res) =>
+            res.json().then(({ metadata }) => ({
+              title: metadata.meta.title ?? '',
+              description: '',
+              image: metadata.og.image,
+              hostname: '',
+              siteName: metadata.og?.site_name ?? '',
+            }))
+          )
         }}
         explicitImageSrc={imageSrc}
         imageHeight={'200px'}
