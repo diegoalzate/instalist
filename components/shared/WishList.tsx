@@ -27,7 +27,7 @@ const WishList = ({ selectedList }: WishListProps) => {
         <Skeleton height="20px" />
       ) : (
         <SimpleGrid columns={[1, 1, 2, 3]} spacingX={['20']} maxW="full">          
-          {items?.map((item, i) => (
+          {items?.sort((a,b) => +(b.favorite ?? 0) - +(a.favorite ?? 0)).map((item, i) => (
             <Wish
               key={i}
               item={item}              
