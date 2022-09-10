@@ -135,24 +135,38 @@ const Wish = ({ item, owner }: WishProps) => {
           {name}
         </h1>
       )}
-      <LinkPreview
-        url={item.url ?? ''}
-        descriptionLength={0}
-        fetcher={() => {
-          return fetch(RLP_PROXY_URL + item.url).then((res) =>
-            res.json().then(({ metadata }) => ({
-              title: metadata.meta.title ?? '',
-              description: '',
-              image: metadata.og.image,
-              hostname: '',
-              siteName: metadata.og?.site_name ?? '',
-            }))
-          )
-        }}
-        explicitImageSrc={imageSrc}
-        imageHeight={'200px'}
-        showLoader={false}
-      />
+      {isLoading ? (
+        <Skeleton h={40} />
+      ) : (
+        <LinkPreview
+          url={item.url ?? ''}
+          descriptionLength={0}
+          fetcher={() => {
+            return fetch(RLP_PROXY_URL + item.url)
+              .then((res) =>
+                res.json().then(({ metadata }) => {
+                  return {
+                    title: metadata.meta.title ?? item.url,
+                    description: '',
+                    image: metadata.og.image ?? '',
+                    hostname: '',
+                    siteName: metadata.og?.site_name ?? '',
+                  }
+                })
+              )
+              .catch((e) => ({
+                title: item.name ?? '',
+                description: '',
+                image: '',
+                hostname: '',
+                siteName: '',
+              }))
+          }}
+          explicitImageSrc={imageSrc}
+          imageHeight={'200px'}
+          showLoader={false}
+        />
+      )}
     </div>
   )
 }
