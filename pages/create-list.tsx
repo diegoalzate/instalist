@@ -6,6 +6,7 @@ import { supabase } from '@/client';
 import { useProfile } from '@/hooks';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { GetServerSideProps } from 'next';
+import Link from 'next/link';
 
 const Picker = (props: any) => {
   const ref: any = useRef()
@@ -57,6 +58,9 @@ const CreateList = () => {
 
   return (
     <div className="flex flex-col items-center grow">
+      <div className='self-start flex justify-between ml-4 hover:underline hover:decoration-wavy'>
+        <Link href={'/list'}>{'<-- back'}</Link>
+      </div>
       <h1 className="my-4 text-xl">
         create{' '}
         <span className="underline decoration-wavy decoration-blue-400">
